@@ -61,7 +61,7 @@ const ISBN_Validator = (isbn) => {
 /**
  * @type {mongoose.Schema<BookObject>}
  */
-const BookSchema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
   ISBN:{
     type:String,
     minlength:10,
@@ -111,5 +111,5 @@ const BookSchema = new mongoose.Schema({
 /**
  * @type {mongoose.model<BookObject>}
  */
-const bookModel = mongoose.model('book_models',BookSchema);
-export default {BookSchema,bookModel};
+const BookModel = mongoose.model('book_models',bookSchema);
+export default {bookSchema,BookModel};

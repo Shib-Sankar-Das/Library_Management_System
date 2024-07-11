@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 /**
  * @type {mongoose.Schema<AdminObject>}
  */
-const AdminSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   Name:{
     type:String,
     minlength:4,
@@ -53,5 +53,5 @@ const AdminSchema = new mongoose.Schema({
 /**
  * @type {mongoose.model<AdminObject>}
  */
-const adminModel = mongoose.model('admin_model',AdminSchema);
-export default {adminModel,AdminSchema};
+const AdminModel = mongoose.model('admin_model',adminSchema);
+export default {AdminModel,adminSchema};

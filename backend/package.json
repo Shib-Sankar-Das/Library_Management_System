@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --env-file=.env --watch --inspect index.js"
+    "start": "node --watch --inspect index.js"
   },
   "keywords": [],
   "author": "Soumabha Saha",

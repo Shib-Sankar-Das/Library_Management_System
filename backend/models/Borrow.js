@@ -14,7 +14,7 @@ import mongoose from "mongoose";
 /**
  * @type {mongoose.Schema<BorrowObject>}
  */
-const BorroeSchema = new mongoose.Schema({
+const borrowSchema = new mongoose.Schema({
   BorrowDate:{
     type:Date,
     required:true,
@@ -66,5 +66,5 @@ const BorroeSchema = new mongoose.Schema({
 /**
  * @type {mongoose.model<BorrowObject>}
  */
-const borrowModel = mongoose.model('borrow_model',BorroeSchema);
-export default {BorroeSchema,borrowModel};
+const BorrowModel = mongoose.model('borrow_model',borrowSchema);
+export default {borrowSchema,BorrowModel};
