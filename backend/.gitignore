@@ -1,3 +1,5 @@
 node_modules
 *.rest
 *.env
+book_data.json
+insert_book_data.js

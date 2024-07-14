@@ -4,9 +4,6 @@ import User from "./User.js";
 import Admin from "./Admin.js";
 import Borrow from "./Borrow.js";
 export default {
-  /**
-   * @type {Map<string,mongoose.Schema>}
-   */
   Schemas:{
     bookCopySchema:Book.bookCopySchema,
     bookSchema:Book.bookSchema,
@@ -14,9 +11,6 @@ export default {
     adminSchema:Admin.adminSchema,
     borrowSchema:Borrow.borrowSchema
   },
-  /**
-   * @type {Map<string,mongoose.Model>}
-   */
   Models:{
     BookCopyModel:Book.BookCopyModel,
     BookModel:Book.BookModel,
