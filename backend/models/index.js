@@ -1,18 +1,21 @@
+import mongoose from "mongoose";
 import Book from "./Book.js";
 import User from "./User.js";
 import Admin from "./Admin.js";
 import Borrow from "./Borrow.js";
 export default {
   Schemas:{
-    BookSchema:Book.BookSchema,
-    UserSchema:User.UserSchema,
-    AdminSchema:Admin.AdminSchema,
-    BorrowSchema:Borrow.BorroeSchema
+    bookCopySchema:Book.bookCopySchema,
+    bookSchema:Book.bookSchema,
+    userSchema:User.userSchema,
+    adminSchema:Admin.adminSchema,
+    borrowSchema:Borrow.borrowSchema
   },
   Models:{
-    bookModel:Book.bookModel,
-    userModel:User.userModel,
-    adminModel:Admin.adminModel,
-    borrowModel:Borrow.borrowModel
+    BookCopyModel:Book.BookCopyModel,
+    BookModel:Book.BookModel,
+    UserModel:User.UserModel,
+    AdminModel:Admin.AdminModel,
+    BorrowModel:Borrow.BorrowModel
   }
 };

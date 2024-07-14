@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 /**
  * @type {mongoose.Schema<UserObject>}
  */
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   Name:{
     type:String,
     minlength:4,
@@ -47,5 +47,5 @@ const UserSchema = new mongoose.Schema({
 /**
  * @type {mongoose.model<UserObject>}
  */
-const userModel = mongoose.model('user_model',UserSchema);
-export default {userModel,UserSchema};
+const UserModel = mongoose.model('user_model',userSchema);
+export default {UserModel,userSchema};
