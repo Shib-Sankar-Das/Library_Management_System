@@ -8,6 +8,7 @@ export default {
    * @type {Map<string,mongoose.Schema>}
    */
   Schemas:{
+    bookCopySchema:Book.bookCopySchema,
     bookSchema:Book.bookSchema,
     userSchema:User.userSchema,
     adminSchema:Admin.adminSchema,
@@ -17,6 +18,7 @@ export default {
    * @type {Map<string,mongoose.Model>}
    */
   Models:{
+    BookCopyModel:Book.BookCopyModel,
     BookModel:Book.BookModel,
     UserModel:User.UserModel,
     AdminModel:Admin.AdminModel,

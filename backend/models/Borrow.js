@@ -7,7 +7,6 @@ import mongoose from "mongoose";
  * @property {string} BookName
  * @property {mongoose.Schema.ObjectId} BookID
  * @property {mongoose.Schema.ObjectId} UserID
- * @property {mongoose.Schema.ObjectId} ID
  * @property {string} AdminName
  * @property {String} AdminEmail
  */
@@ -17,16 +16,11 @@ import mongoose from "mongoose";
 const borrowSchema = new mongoose.Schema({
   BorrowDate:{
     type:Date,
-    required:true,
     default:Date.now
   },
   RenewalDate:{
     type:Date,
     required:true,
-  },
-  ID:{
-    type:mongoose.Schema.ObjectId,
-    required:true
   },
   BookID:{
     type:mongoose.Schema.ObjectId,

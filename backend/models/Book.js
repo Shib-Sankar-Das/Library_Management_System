@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
-/**
- * @typedef AccessionStatus
- * @property {mongoose.Schema.ObjectId} ID
- * @property {Boolean} Borrowed
- */
+
 /**
  * @typedef {BookObject}
  * @property {string} Name
@@ -12,7 +8,7 @@ import mongoose from "mongoose";
  * @property {Date} PublishingDate
  * @property {string} Publisher
  * @property {string} Subject
- * @property {AccessionStatus[]} AccessionIDs
+ * @property {Boolean} Borrowed
  */
 /**
  * @name validateISBN10 validate ISBN with length 10
@@ -67,6 +63,7 @@ const bookSchema = new mongoose.Schema({
     minlength:10,
     maxlength:13,
     unique:true,
+    required:true,
     validate:{
       validator:ISBN_Validator,
       message: (props) => `${props.value} is not a valid ISBN!`
@@ -97,19 +94,72 @@ const bookSchema = new mongoose.Schema({
     required:true,
     default: Date.now
   },
-  AccessionIDs:[{
-    ID:{
-      type:mongoose.Schema.ObjectId,
-      required:true
-    },
-    Borrowed:{
-      type:Boolean,
-      required:true
+  Borrowed:{
+    type:Boolean,
+    required:[true,"Borrowed field is required"]
+  }
+});
+/**
+ * @typedef {BookCopyObject}
+ * @property {string} Name
+ * @property {string} Author
+ * @property {string} ISBN
+ * @property {Date} PublishingDate
+ * @property {string} Publisher
+ * @property {string} Subject
+ * @property {Number} Copies 
+ */
+/**
+ * @type {mongoose.Schema<BookCopyObject>}
+ */
+const bookCopySchema = new mongoose.Schema({
+  ISBN:{
+    type:String,
+    minlength:10,
+    maxlength:13,
+    unique:true,
+    required:true,
+    validate:{
+      validator:ISBN_Validator,
+      message: (props) => `${props.value} is not a valid ISBN!`
     }
-  }]
+  },
+  Name:{
+    type:String,
+    minlength:4,
+    required:true
+  },
+  Author:{
+    type:String,
+    minlength:4,
+    required:true
+  },
+  Publisher:{
+    type:String,
+    minlength:4,
+    required:true
+  },
+  Subject:{
+    type:String,
+    minlength:4,
+    required:true
+  },
+  PublishingDate:{
+    type:Date,
+    required:true,
+    default: Date.now
+  },
+  Copies:{
+    type:Number,
+    required:true
+  }
 });
 /**
  * @type {mongoose.model<BookObject>}
  */
 const BookModel = mongoose.model('book_models',bookSchema);
-export default {bookSchema,BookModel};
+/**
+ * @type {mongoose.model<BookCopyObject>}
+ */
+const BookCopyModel = mongoose.model('book_copy_models',bookSchema);
+export default {bookSchema,BookModel,bookCopySchema,BookCopyModel};
