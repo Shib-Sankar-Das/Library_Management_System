@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 /**
- * @typedef {BookObject}
+ * @typedef BookObject
  * @property {string} Name
  * @property {string} Author
  * @property {string} ISBN
@@ -56,7 +56,7 @@ const bookSchema = new mongoose.Schema({
   },
   Subject:{
     type:String,
-    minlength:4,
+    minlength:2,
     required:true
   },
   PublishingDate:{
@@ -70,7 +70,7 @@ const bookSchema = new mongoose.Schema({
   }
 });
 /**
- * @typedef {BookCopyObject}
+ * @typedef BookCopyObject
  * @property {string} Name
  * @property {string} Author
  * @property {string} ISBN
@@ -78,6 +78,7 @@ const bookSchema = new mongoose.Schema({
  * @property {string} Publisher
  * @property {string} Subject
  * @property {Number} Copies 
+ * @property {Buffer} CoverPage 
  */
 /**
  * @type {mongoose.Schema<BookCopyObject>}
@@ -111,13 +112,17 @@ const bookCopySchema = new mongoose.Schema({
   },
   Subject:{
     type:String,
-    minlength:4,
+    minlength:2,
     required:true
   },
   PublishingDate:{
     type:Date,
     required:true,
     default: Date.now
+  },
+  CoverPage:{
+    type:Buffer,
+    required:[true,'cover page is required.']
   },
   Copies:{
     type:Number,
