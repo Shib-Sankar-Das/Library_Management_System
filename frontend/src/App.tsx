@@ -1,24 +1,22 @@
-import React from 'react';
-import './App.css';
-const App:React.FC=()=> {
-  fetch('api/view-book/All').then(res=>res.text()).then(data=>{
-    const cnt=document.getElementById('book-container');
-    console.log(data);
-    (cnt as HTMLDivElement).innerHTML = data;
-  })
+import React from "react";
+import "./App.css";
+import { z } from "zod";
+import { BookCopyModel } from "./zod_schemas/BookCopy";
+import BookView from "./Components/BookView";
+const App: React.FC = () => {
+  const [Data, SetData] = React.useState<z.infer<typeof BookCopyModel>>([]);
+  React.useEffect(()=>{
+    fetch("api/view-book/All")
+      .then((res) => res.json())
+      .then((data) => {
+        const DATA = BookCopyModel.safeParse(data);
+        (DATA.success)?SetData(DATA.data):console.error(DATA.error);
+      });
+  },[])
   return (
-  <div id='book-container' className='flex flex-row'>
-    <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img className="w-full" src="./fall_back_cover.jpeg" alt="Book Cover"/>
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">Book Name</div>
-        <p className="text-gray-700 text-base">Author: Author Name</p>
-        <p className="text-gray-700 text-base">Subject: Subject Name</p>
-        <p className="text-gray-700 text-base">Publisher: Publisher Name</p>
-      </div>
+    <div className="grid grid-flow-row grid-cols-2 justify-center align-middle">
+      {Data.map((item) => (<BookView key={item._id} {...item} />))}
     </div>
-
-  </div>
-  )
-}
+  );
+};
 export default App;

@@ -1,11 +1,11 @@
 <% Data.forEach((item)=>{%>
 <div class="max-w-sm rounded overflow-hidden shadow-lg">
-  <img class="aspect-square max-h-36"  src="<%=item.ImageLink %>" alt="Book Cover" onerror="this.onerror = null; this.src='./fall_back_cover.jpeg'"/>
+  <img class="w-full max-h-40 object-contain  bg-black"  src="<%=item.ImageLink %>" alt="Book Cover" onerror="this.onerror = null; this.src='./fall_back_cover.jpeg'"/>
   <div class="px-3 py-2">
-    <div class="font-bold text-xl mb-2 overflow-hidden text-clip"><%= item.Name %></div>
-    <p class="text-gray-700 text-base">Author: <%= item.Author %></p>
-    <p class="text-gray-700 text-base">Subject: <%= item.Aubject %></p>
-    <p class="text-gray-700 text-base">Publisher: <%= item.Publisher %></p>
+    <div class="font-bold text-xl mb-2 overflow-hidden text-ellipsis"><%= item.Name %></div>
+    <p class="text-gray-700 text-base text-ellipsis">Author: <%= item.Author %></p>
+    <p class="text-gray-700 text-base text-ellipsis">Subject: <%= item.Aubject %></p>
+    <p class="text-gray-700 text-base text-ellipsis">Publisher: <%= item.Publisher %></p>
   </div>
 </div>
 <%})%>

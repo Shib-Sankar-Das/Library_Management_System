@@ -6,19 +6,16 @@ import express from 'express';
  * @param {express.Request} request 
  * @param {express.Response} response 
  */
-const endPoint = async (request,response) => {
+const covers = async (request,response) => {
   if(request.params.Subject == 'All'){
-    /**
-     * @type {import('../../../models/Book.js').BookCopyObject[]}
-    */
     let Data = await models.Models.BookCopyModel.find({});
     Data = JSON.parse(JSON.stringify(Data));
-    response.json(Data.map((item)=>{
-      delete item.CoverPage;
-      delete item.__v
-      item.ImageLink = `http://localhost:4000/api/covers/${item._id}`;
-      return item;
-    }));
+    response.render('book.ejs',{Data:Data.map(i=>{
+      delete i.CoverPage;
+      i.ImageLink = 'http://localhost:4000/api/covers/'+i._id;
+      return i;
+    })});
+    /*render('book.ejs',{Data:})*/;
   }
 }
-export default endPoint;
+export default covers;
