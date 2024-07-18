@@ -55,7 +55,7 @@ const adminSchema = new mongoose.Schema({
   }
 });
 /**
- * @type {mongoose.model<AdminObject>}
+ * @type {mongoose.Model<AdminObject>}
  */
 const AdminModel = mongoose.model('admin_model',adminSchema);
 export default {AdminModel,adminSchema};
