@@ -1,6 +1,6 @@
 import React from "react";
 import { z } from "zod";
-import { BookCopyModel } from "./../zod_schemas/BookCopy";
+import { BookCopyModel } from "./../Validator/BookCopy";
 import BookView from "./../Components/BookView";
 const AllBooks : React.FC = () =>{
   const [Data, SetData] = React.useState<z.infer<typeof BookCopyModel>>([]);

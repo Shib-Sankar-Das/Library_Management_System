@@ -58,7 +58,7 @@ const borrowSchema = new mongoose.Schema({
   }
 });
 /**
- * @type {mongoose.model<BorrowObject>}
+ * @type {mongoose.Model<BorrowObject>}
  */
 const BorrowModel = mongoose.model('borrow_model',borrowSchema);
 export default {borrowSchema,BorrowModel};

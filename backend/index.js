@@ -19,8 +19,6 @@ try {
       fileSize: 40 * 1024
     }
   }));
-  APP.set('view engine', 'ejs');
-  APP.set('views', path.resolve('./views'));
 
   APP.get('/api/' + routes.ViewBooks.routeName + '/:Subject', routes.ViewBooks.GET.endPoint);
   /**

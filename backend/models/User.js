@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 /**
- * @type {mongoose.model<UserObject>}
+ * @type {mongoose.Model<UserObject>}
  */
 const UserModel = mongoose.model('user_model',userSchema);
 export default {UserModel,userSchema};

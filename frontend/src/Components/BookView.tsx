@@ -1,6 +1,6 @@
 import React from "react";
 import { z } from "zod";
-import { bookCopySchema } from "../zod_schemas/BookCopy";
+import { bookCopySchema } from "../Validator/BookCopy";
 type props = z.infer<typeof bookCopySchema>;
 const BookView: React.FC<props> = (data: props) => {
   return (

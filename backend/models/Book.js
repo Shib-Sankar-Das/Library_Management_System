@@ -130,11 +130,12 @@ const bookCopySchema = new mongoose.Schema({
   }
 });
 /**
- * @type {mongoose.model<BookObject>}
+ * @type {mongoose.Model<BookObject>}
  */
 const BookModel = mongoose.model('book_models',bookSchema);
 /**
- * @type {mongoose.model<BookCopyObject>}
+ * @type {mongoose.Model<BookCopyObject>}
  */
 const BookCopyModel = mongoose.model('book_copy_models',bookCopySchema);
+
 export default {bookSchema,BookModel,bookCopySchema,BookCopyModel};
