@@ -5,7 +5,7 @@ import mongoose from "mongoose";
  * @property {string} Email
  * @property {string} Password
  * @property {Date} JoiningDate
- * @property {Buffer} ProfilePicture
+ * @property {Buffer} Avatar
  */
 /**
  * @type {mongoose.Schema<AdminObject>}
@@ -49,7 +49,7 @@ const adminSchema = new mongoose.Schema({
     type:Date,
     default:Date.now
   },
-  ProfilePicture:{
+  Avatar:{
     type:Buffer,
     required:[true,'profile pic is required.']
   }

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
  * @property {string} Name
  * @property {string} Email
  * @property {string} Password 
- * @property {Buffer} ProfilePicture
+ * @property {Buffer} Avatar
  */
 /**
  * @type {mongoose.Schema<UserObject>}
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
       message:props=>`${props.value} is not a valid password.`
     }
   },
-  ProfilePicture:{
+  Avatar:{
     type:Buffer,
     required:[true,'profile pic is required.']
   }
