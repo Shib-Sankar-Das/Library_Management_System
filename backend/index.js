@@ -10,7 +10,7 @@ import fs from 'fs';
 try {
   console.clear();
   dotenv.config();
-  connect(process.env.DATABASE_URL);
+  await connect(process.env.DATABASE_URL);
 
   const APP = express();
   APP.use(express.json());
@@ -36,7 +36,8 @@ try {
     }
   });
 
-  APP.post(routes.ClientRegistration.routeName,
+  APP.post(
+    "/api/"+routes.ClientRegistration.routeName,
     routes.ClientRegistration.POST.invalidCredentialError,
     routes.ClientRegistration.POST.invalidMimeTypeError,
     routes.ClientRegistration.POST.duplicateCredentialError,
