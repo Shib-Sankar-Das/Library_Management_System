@@ -1,6 +1,9 @@
 import React from "react";
 import { z } from "zod";
 import { clientSignUpSchema } from "../Validator/ClientSignup";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BottomtoastOption from "../Options/BottomToastOption";
 const ClientAuthentication: React.FC = () => {
   
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
@@ -20,16 +23,42 @@ const ClientAuthentication: React.FC = () => {
       UPLOAD.append("Email",Data.Email);
       if(!Avatar) throw new Error('Avatar not selected');
       UPLOAD.append("Avatar",Avatar as File);
+      toast.success("successfully signed up",BottomtoastOption);
       const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
-      console.log(response)
+      console.log(response);
     }catch(e){
-      SetMessage((e as {message:string}).message);
+      toast.error((e as {message:string}).message.substring(0,47)+"...",BottomtoastOption);
     }
   }
   
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const Image: HTMLImageElement = document.querySelector<HTMLImageElement>("img#upload-avatar")!;
+    SetAvatar(()=>{
+      try{
+        if(e.target.files && (e.target.files as FileList)[0].size <= (40*1024)){
+          Image.src = URL.createObjectURL(e.target.files![0]);
+          SetMessage("set another");
+          return e.target.files[0];
+        }else{
+          Image.src = "./invalid.svg";
+          SetMessage("file must be under 40KB");
+          toast.error("file must be under 40KB",BottomtoastOption);
+          return undefined;
+        } 
+      }catch(e){
+        Image.src = "./invalid.svg";
+        SetMessage("file must be under 40KB");
+        toast.error("please select a file",BottomtoastOption);
+        return undefined;
+      }
+    });
+  }
+
+
   return (
     <>
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
+        <ToastContainer />
         <div
           className="hidden bg-cover lg:block lg:w-1/2 relative"
           style={{ backgroundImage: "url('./library.jpg')" }}
@@ -59,26 +88,7 @@ const ClientAuthentication: React.FC = () => {
               id="UserAvatar"
               className="hidden w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
               type="file"
-              onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
-                const Image: HTMLImageElement = document.querySelector<HTMLImageElement>("img#upload-avatar")!;
-                SetAvatar(()=>{
-                  try{
-                    if(e.target.files && (e.target.files as FileList)[0].size <= (40*1024)){
-                      Image.src = URL.createObjectURL(e.target.files![0]);
-                      SetMessage("change avater");
-                      return e.target.files[0];
-                    }else{
-                      Image.src = "./invalid.svg";
-                      SetMessage("file must be under 40KB");
-                      return undefined;
-                    } 
-                  }catch(e){
-                    Image.src = "./invalid.svg";
-                    SetMessage("please select a file");
-                    return undefined;
-                  }
-                });
-              }}
+              onInput={handleAvatarChange}
             />
           </div>
 
@@ -145,7 +155,7 @@ const ClientAuthentication: React.FC = () => {
               type="password"
               placeholder="double-click to see"
               value={Data.Password}
-              pattern={"^[\x21-\x7E]{8}$"}
+              pattern={"^[\x21-\x7E]{8,}$"}
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
                   return { ...prev, Password: e.target?.value||"" };

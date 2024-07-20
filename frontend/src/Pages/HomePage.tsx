@@ -64,17 +64,17 @@ const Homepage: React.FC = () => {
             <h2 className="text-3xl font-bold text-center mb-12" data-aos="fade-up">Our Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://source.unsplash.com/random/400x300?library" alt="Feature 1" className="w-full h-48 object-cover rounded-lg mb-4" />
+                <img src="./book (3).jpg" alt="Feature 1" className="w-full h-48 object-cover rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Catalog Management</h3>
                 <p>Easily manage and organize your entire book collection.</p>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
-                <img src="https://source.unsplash.com/random/400x300?bookshelf" alt="Feature 2" className="w-full h-48 object-cover rounded-lg mb-4" />
+                <img src="./book (1).jpg" alt="Feature 2" className="w-full h-48 object-cover rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Member Management</h3>
                 <p>Keep track of library members and their borrowing history.</p>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="600">
-                <img src="https://source.unsplash.com/random/400x300?ebook" alt="Feature 3" className="w-full h-48 object-cover rounded-lg mb-4" />
+                <img src="./book (2).jpg" alt="Feature 3" className="w-full h-48 object-cover rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Digital Resources</h3>
                 <p>Integrate and manage e-books and digital content seamlessly.</p>
               </div>
