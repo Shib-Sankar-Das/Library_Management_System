@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import models from "../../../models/index.js"
 /**
  * 
@@ -10,8 +9,10 @@ import models from "../../../models/index.js"
 const duplicateCredentialError = async (request,response,next) => {
   try{
     const user = new models.Models.UserModel({...request.body,Avatar:request.files.data});
-    request.body = JSON.parse(JSON.stringify(await user.save()));
-    delete request.body.Avatar;
+    let doc = JSON.parse(JSON.stringify(await user.save()));
+    delete doc.Avatar;
+    delete doc.__v;
+    request.body = doc;
     next();
   }catch(e){
     response.json({err:e.message});
