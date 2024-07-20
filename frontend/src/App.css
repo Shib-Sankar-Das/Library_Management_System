@@ -44,3 +44,13 @@
 .read-the-docs {
   color: #888;
 }
+
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+.float {
+  animation: float 3s ease-in-out infinite;
+}
