@@ -1,7 +1,6 @@
 import React from "react";
 import { z } from "zod";
 import { clientSignUpSchema } from "../Validator/ClientSignup";
-
 const ClientAuthentication: React.FC = () => {
   
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
@@ -10,10 +9,24 @@ const ClientAuthentication: React.FC = () => {
     Email: "",
   });
   const [Avatar,SetAvatar] = React.useState<File>(); 
-  React.useEffect(() => {
-    const fetchData = async () => {};
-    fetchData();
-  }, []);
+  const [Meaasge,SetMessage] = React.useState<string>("upload your picture under 40KB");
+  
+  const handleSubmit = async ()=> {
+    try{
+      clientSignUpSchema.parse(Data);
+      const UPLOAD = new FormData();
+      UPLOAD.append("Name",Data.Name);
+      UPLOAD.append("Password",Data.Password);
+      UPLOAD.append("Email",Data.Email);
+      if(!Avatar) throw new Error('Avatar not selected');
+      UPLOAD.append("Avatar",Avatar as File);
+      const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
+      console.log(response)
+    }catch(e){
+      SetMessage((e as {message:string}).message);
+    }
+  }
+  
   return (
     <>
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
@@ -21,7 +34,7 @@ const ClientAuthentication: React.FC = () => {
           className="hidden bg-cover lg:block lg:w-1/2 relative"
           style={{ backgroundImage: "url('./library.jpg')" }}
         >
-          <p className="mt-3 text-xl absolute text-center text-gray-600 dark:text-gray-200 bg-[#77777780] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <p className="px-1 mt-3 text-xl rounded-sm absolute text-center text-gray-600 dark:text-gray-200 bg-[#77777780] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] hover:text-black ease-linear ">
             Welcome to Library
           </p>
         </div>
@@ -37,10 +50,10 @@ const ClientAuthentication: React.FC = () => {
 
           <div className="mt-4">
             <label
-              className="block text-center mb-2 text-sm font-medium text-gray-600 dark:text-gray-200 hover:cursor-pointer hover:text-cyan-500"
+              className="block text-center mb-2 text-sm font-medium text-red-600 hover:cursor-pointer hover:text-cyan-500"
               htmlFor="UserAvatar"
             >
-              upload your picture under 40KB
+              {"*"+Meaasge}
             </label>
             <input
               id="UserAvatar"
@@ -48,17 +61,23 @@ const ClientAuthentication: React.FC = () => {
               type="file"
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const Image: HTMLImageElement = document.querySelector<HTMLImageElement>("img#upload-avatar")!;
-                SetAvatar(prev=>{
-                  if(e.target.files && (e.target.files as FileList)[0].size <= (40*1024)){
-                    Image.src = URL.createObjectURL(e.target.files![0]);
-                    return e.target.files[0];
-                  }else{
-                    Image.src = "./avatar.svg";
-                    console.log('error in file');
-                    return prev;
-                  } 
+                SetAvatar(()=>{
+                  try{
+                    if(e.target.files && (e.target.files as FileList)[0].size <= (40*1024)){
+                      Image.src = URL.createObjectURL(e.target.files![0]);
+                      SetMessage("change avater");
+                      return e.target.files[0];
+                    }else{
+                      Image.src = "./invalid.svg";
+                      SetMessage("file must be under 40KB");
+                      return undefined;
+                    } 
+                  }catch(e){
+                    Image.src = "./invalid.svg";
+                    SetMessage("please select a file");
+                    return undefined;
+                  }
                 });
-                console.log(Avatar);
               }}
             />
           </div>
@@ -92,7 +111,7 @@ const ClientAuthentication: React.FC = () => {
             </label>
             <input
               id="LoggingEmailAddress"
-              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 invalid:text-red-600"
               type="email"
               value={Data.Email}
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,13 +141,18 @@ const ClientAuthentication: React.FC = () => {
 
             <input
               id="loggingPassword"
-              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 invalid:text-red-600"
               type="password"
+              placeholder="double-click to see"
               value={Data.Password}
+              pattern={"^[\x21-\x7E]{8}$"}
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
                   return { ...prev, Password: e.target?.value||"" };
                 });
+              }}
+              onDoubleClick={(e:React.MouseEvent<HTMLInputElement,MouseEvent>)=>{
+                e.currentTarget.type = (e.currentTarget.type=="password")?("text"):("password"); 
               }}
             />
           </div>
@@ -136,9 +160,7 @@ const ClientAuthentication: React.FC = () => {
           <div className="mt-6">
             <button
               className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-              onClick={ ()=>{
-                console.log(Data);
-              }}
+              onClick={handleSubmit}
             >
               Sign Up
             </button>

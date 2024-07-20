@@ -8,7 +8,7 @@ import models from "../../../models/index.js"
  */
 const duplicateCredentialError = async (request,response,next) => {
   try{
-    const user = new models.Models.UserModel({...request.body,Avatar:request.files.data});
+    const user = new models.Models.UserModel({...request.body,Avatar:request.files.Avatar.data});
     let doc = JSON.parse(JSON.stringify(await user.save()));
     delete doc.Avatar;
     delete doc.__v;
