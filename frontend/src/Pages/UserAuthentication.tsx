@@ -4,7 +4,7 @@ import { clientSignUpSchema } from "../Validator/ClientSignup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomtoastOption from "../Options/BottomToastOption";
-const ClientAuthentication: React.FC = () => {
+const UserAuthentication: React.FC = () => {
   
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
     Name: "",
@@ -25,7 +25,7 @@ const ClientAuthentication: React.FC = () => {
       UPLOAD.append("Avatar",Avatar as File);
       toast.success("successfully signed up",BottomtoastOption);
       const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
-      console.log(response);
+      toast.success(JSON.stringify(response),BottomtoastOption);
     }catch(e){
       toast.error((e as {message:string}).message.substring(0,47)+"...",BottomtoastOption);
     }
@@ -79,7 +79,7 @@ const ClientAuthentication: React.FC = () => {
 
           <div className="mt-4">
             <label
-              className="block text-center mb-2 text-sm font-medium text-red-600 hover:cursor-pointer hover:text-cyan-500"
+              className="block text-center mb-2 text-sm font-medium text-blue-300 hover:cursor-pointer hover:text-cyan-500"
               htmlFor="UserAvatar"
             >
               {"*"+Meaasge}
@@ -194,4 +194,4 @@ const ClientAuthentication: React.FC = () => {
   );
 };
 
-export default ClientAuthentication;
+export default UserAuthentication;

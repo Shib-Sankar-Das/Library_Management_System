@@ -12,6 +12,7 @@ const duplicateCredentialError = async (request,response,next) => {
     let doc = JSON.parse(JSON.stringify(await user.save()));
     delete doc.Avatar;
     delete doc.__v;
+    delete doc.Password;
     request.body = doc;
     next();
   }catch(e){

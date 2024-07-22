@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import CookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connect } from "mongoose";
 import expressFileUpload from 'express-fileupload';
@@ -14,13 +14,9 @@ try {
 
   const APP = express();
   APP.use(express.json());
-  APP.use(CookieParser());
+  APP.use(cookieParser());
   APP.use(express.urlencoded({ extended: true }));
-  APP.use(expressFileUpload({
-    limits: {
-      fileSize: 40 * 1024,
-    }
-  }));
+  APP.use(expressFileUpload({limits: {fileSize: 40 * 1024},abortOnLimit:true}));
 
   APP.get('/api/' + routes.ViewBooks.routeName + '/:Subject', routes.ViewBooks.GET.endPoint);
   /**

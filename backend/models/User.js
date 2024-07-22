@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 /**
  * @typedef UserObject
  * @property {string} Name
@@ -13,8 +14,18 @@ const userSchema = new mongoose.Schema({
   Name:{
     type:String,
     minlength:4,
+    maxlength:50,
     requireed:true,
-    lowercase:true
+    lowercase:true,
+    validator:{
+      /**
+       * @name vlidator validates Email
+       * @param {string} v 
+       * @returns {Boolean}
+       */
+      validate:v=>/^[a-zA-Z ]{4,50}$/.test(v),
+      message:props=>`${props.value} is not a valid user name.`
+    }
   },
   Email:{
     type:String,
@@ -33,16 +44,7 @@ const userSchema = new mongoose.Schema({
   Password:{
     type:String,
     required:true,
-    unique:true,
-    validate:{
-      /**
-       * @name vlidator validates Password
-       * @param {string} v 
-       * @returns {Boolean}
-       */
-      validator:v=> /^[\x21-\x7E]{8}$/.test(v),
-      message:props=>`${props.value} is not a valid password.`
-    }
+    unique:true
   },
   Avatar:{
     type:Buffer,
@@ -52,5 +54,9 @@ const userSchema = new mongoose.Schema({
 /**
  * @type {mongoose.Model<UserObject>}
  */
+userSchema.pre('save',function(next){
+  this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(8));
+  next();
+})
 const UserModel = mongoose.model('user_model',userSchema);
 export default {UserModel,userSchema};

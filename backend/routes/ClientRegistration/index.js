@@ -6,4 +6,4 @@ export default
   {
     routeName:"client-registration",
     POST:{ duplicateCredentialError, invalidCredentialError, invalidMimeTypeError, endPoint }
-  }
+  };
