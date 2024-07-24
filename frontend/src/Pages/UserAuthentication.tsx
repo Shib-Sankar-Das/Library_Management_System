@@ -3,14 +3,17 @@ import { z } from "zod";
 import { clientSignUpSchema } from "../Validator/ClientSignup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BottomtoastOption from "../Options/BottomToastOption";
+import BottomToastOption from "../Options/BottomToastOption";
 const UserAuthentication: React.FC = () => {
   
+  const [FormName,SetFormName] = React.useState<"SignUp"|"LogIn">("SignUp")
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
     Name: "",
     Password: "",
     Email: "",
   });
+  
+  const [Rev,SetRev] = React.useState<{flexDirection:"row"|"row-reverse"}>({flexDirection:"row"});
   const [Avatar,SetAvatar] = React.useState<File>(); 
   const [Meaasge,SetMessage] = React.useState<string>("upload your picture under 40KB");
   
@@ -23,11 +26,11 @@ const UserAuthentication: React.FC = () => {
       UPLOAD.append("Email",Data.Email);
       if(!Avatar) throw new Error('Avatar not selected');
       UPLOAD.append("Avatar",Avatar as File);
-      toast.success("successfully signed up",BottomtoastOption);
-      const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
-      toast.success(JSON.stringify(response),BottomtoastOption);
+      // toast.success("successfully signed up",BottomtoastOption);
+      // const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
+      // toast.success(JSON.stringify(response),BottomtoastOption);
     }catch(e){
-      toast.error((e as {message:string}).message.substring(0,47)+"...",BottomtoastOption);
+      toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
     }
   }
   
@@ -42,13 +45,13 @@ const UserAuthentication: React.FC = () => {
         }else{
           Image.src = "./invalid.svg";
           SetMessage("file must be under 40KB");
-          toast.error("file must be under 40KB",BottomtoastOption);
+          toast.error("file must be under 40KB",BottomToastOption);
           return undefined;
         } 
       }catch(e){
         Image.src = "./invalid.svg";
         SetMessage("file must be under 40KB");
-        toast.error("please select a file",BottomtoastOption);
+        toast.error("please select a file",BottomToastOption);
         return undefined;
       }
     });
@@ -57,7 +60,12 @@ const UserAuthentication: React.FC = () => {
 
   return (
     <>
-      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
+      <form name={FormName} className="flex w-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg transition-all dark:bg-gray-800 lg:max-w-4xl"
+        style={{
+          flexDirection:Rev.flexDirection
+        }}
+        onSubmit={handleSubmit}
+      >
         <ToastContainer />
         <div
           className="hidden bg-cover lg:block lg:w-1/2 relative"
@@ -70,10 +78,11 @@ const UserAuthentication: React.FC = () => {
         <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
             <img
-              className="w-auto h-20 sm:h-20"
+              className="w-auto h-20 sm:h-20 border-dashed border-[2px] rounded-xl border-cyan-600"
               src="./avatar.svg"
               alt=""
               id="upload-avatar"
+              style={{display:(FormName=="SignUp")?("block"):("none")}}
             />
           </div>
 
@@ -81,6 +90,7 @@ const UserAuthentication: React.FC = () => {
             <label
               className="block text-center mb-2 text-sm font-medium text-blue-300 hover:cursor-pointer hover:text-cyan-500"
               htmlFor="UserAvatar"
+              style={{display:(FormName=="SignUp")?("block"):("none")}}
             >
               {"*"+Meaasge}
             </label>
@@ -89,6 +99,7 @@ const UserAuthentication: React.FC = () => {
               className="hidden w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
               type="file"
               onInput={handleAvatarChange}
+              required = {(FormName==="SignUp")}
             />
           </div>
 
@@ -96,6 +107,7 @@ const UserAuthentication: React.FC = () => {
             <label
               className="block text-left mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
               htmlFor="LoggingUserName"
+              style={{display:(FormName=="SignUp")?("block"):("none")}}
             >
               User Name
             </label>
@@ -103,7 +115,10 @@ const UserAuthentication: React.FC = () => {
               id="LoggingUserName"
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
               type="text"
+              autoComplete="username"
               value={Data.Name}
+              required = {(FormName==="SignUp")}
+              style={{display:(FormName=="SignUp")?("block"):("none")}}
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
                   return { ...prev, Name: e.target?.value||"" };
@@ -124,6 +139,7 @@ const UserAuthentication: React.FC = () => {
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 invalid:text-red-600"
               type="email"
               value={Data.Email}
+              required
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
                   return { ...prev, Email: e.target?.value||"" };
@@ -156,11 +172,13 @@ const UserAuthentication: React.FC = () => {
               placeholder="double-click to see"
               value={Data.Password}
               pattern={"^[\x21-\x7E]{8,}$"}
+              autoComplete="current-password"
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
                   return { ...prev, Password: e.target?.value||"" };
                 });
               }}
+              required
               onDoubleClick={(e:React.MouseEvent<HTMLInputElement,MouseEvent>)=>{
                 e.currentTarget.type = (e.currentTarget.type=="password")?("text"):("password"); 
               }}
@@ -170,9 +188,9 @@ const UserAuthentication: React.FC = () => {
           <div className="mt-6">
             <button
               className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-              onClick={handleSubmit}
+              type="submit"
             >
-              Sign Up
+              {FormName}
             </button>
           </div>
 
@@ -182,14 +200,21 @@ const UserAuthentication: React.FC = () => {
             <a
               href="#"
               className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
+              onClick={()=>{
+                const form = document.forms.namedItem(FormName);
+                form!.style.opacity = "0.5";
+                window.setTimeout(()=>{form!.style.opacity = "1"},50)
+                SetRev(prev=> ((prev.flexDirection=="row")?({...prev,flexDirection:"row-reverse"}):({...prev,flexDirection:"row"})));
+                SetFormName((prev)=>((prev==="SignUp")?("LogIn"):("SignUp")));
+              }}
             >
-              or sign in
+              or {(FormName=="SignUp")?("LogIn"):("SignUp")}
             </a>
 
             <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };
