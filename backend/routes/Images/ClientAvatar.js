@@ -12,7 +12,7 @@ const ClientAvatar = async (req, res) => {
     /**
      * await import('mongoose')
      */
-    const { Avatar } = JSON.parse(JSON.stringify(await models.Models.UserModel.findOne({ _id: req.params.id })));
+    const { Avatar } = JSON.parse(JSON.stringify(await models.Models.UserModel.findOne({ _id: req.params.client_id })));
     if(Avatar==null) throw new Error();
     res.send(Buffer.from(Avatar.data));
   }catch(e){

@@ -12,7 +12,7 @@ const CoverPage = async (req, res) => {
     /**
      * await import('mongoose')
      */
-    const { CoverPage } = JSON.parse(JSON.stringify(await models.Models.BookCopyModel.findOne({ _id: req.params.id })));
+    const { CoverPage } = JSON.parse(JSON.stringify(await models.Models.BookCopyModel.findOne({ _id: req.params.book_copy_id })));
     if(CoverPage==null) throw new Error();
     res.send(Buffer.from(CoverPage.data));
   }catch(e){
