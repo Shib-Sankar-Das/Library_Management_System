@@ -1,6 +1,13 @@
 import React from "react";
 // import { z } from "zod";
 const UserDashBoard: React.FC = () => {
+  React.useEffect(()=>{
+    const FetchData = async ()=>{
+      const data = await fetch('/api/user').then(res=>res.json());
+      console.log(data);
+    }
+    FetchData();
+  },[])  
   return (
     <>
       <div className="flex flex-row">

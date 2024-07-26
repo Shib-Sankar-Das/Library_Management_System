@@ -26,7 +26,6 @@ const UserAuthentication: React.FC = () => {
       UPLOAD.append("Email",Data.Email);
       if(!Avatar) throw new Error('Avatar not selected');
       UPLOAD.append("Avatar",Avatar as File);
-      // toast.success("successfully signed up",BottomtoastOption);
       const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then(res=>res.json());
       toast.success(JSON.stringify(response),BottomToastOption);
     }catch(e){
