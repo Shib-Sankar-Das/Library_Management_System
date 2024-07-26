@@ -14,8 +14,18 @@ const adminSchema = new mongoose.Schema({
   Name:{
     type:String,
     minlength:4,
+    maxlength:50,
     requireed:true,
-    lowercase:true
+    lowercase:true,
+    validator:{
+      /**
+       * @name vlidator validates Email
+       * @param {string} v 
+       * @returns {Boolean}
+       */
+      validate:v=>/^[a-zA-Z ]{4,50}$/.test(v),
+      message:props=>`${props.value} is not a valid user name.`
+    }
   },
   Email:{
     type:String,
@@ -35,15 +45,6 @@ const adminSchema = new mongoose.Schema({
     type:String,
     required:true,
     unique:true,
-    validate:{
-      /**
-       * @name vlidator validates Password
-       * @param {string} v 
-       * @returns {Boolean}
-       */
-      validator:v=> /^[\x21-\x7E]{8}$/.test(v),
-      message:props=>`${props.value} is not a valid password.`
-    }
   },
   JoiningDate:{
     type:Date,

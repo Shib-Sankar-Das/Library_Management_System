@@ -13,7 +13,7 @@ const AllBooks : React.FC = () =>{
       });
   },[])
   return (
-    <div className="grid grid-flow-row grid-cols-[repeat(auto-fill,450px)] auto-rows-[300px] min-w-full m-0 p-0 justify-center align-middle gap-1.5">
+    <div className="grid grid-flow-row grid-cols-[repeat(auto-fill,30%)] auto-rows-[70dvh] min-w-full m-0 p-2 justify-center align-middle gap-1.5">
       {Data.map((item) => (<BookView key={item._id} {...item} />))}
     </div>
   );

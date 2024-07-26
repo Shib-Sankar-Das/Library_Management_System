@@ -1,12 +1,5 @@
 import express from "express"
-import GetEndPoint from "./GET/endPoint.js";
-export default {
-  routeName:"borrow-book",
-  GET:{
-    endPoint:GetEndPoint
-  },
-  POST:{},
-  PUT:{},
-  PATCH:{},
-  DELETE:{}
-};
+import getEndPoint from "./GET/endPoint.js";
+const BorrowRouter = express.Router();
+BorrowRouter.get("/borrow-book",getEndPoint)
+export default BorrowRouter;

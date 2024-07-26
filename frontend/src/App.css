@@ -1,10 +1,16 @@
 *{
   box-sizing: border-box;
+  transition: all 0.25s linear;
 }
 #root {
   max-width: 100%;
   min-width: 100%;
-  /* margin: 0 auto; */
+  min-height: 100dvh;
+  max-height: 100dvh;
+  background-image: url('./back.jpg');
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
   text-align: center;
 }
 
@@ -43,7 +49,11 @@
 .read-the-docs {
   color: #888;
 }
-
+@keyframes beat {
+  50% {
+    opacity: .5;
+  }
+}
 
 @keyframes float {
   0% { transform: translateY(0px); }
