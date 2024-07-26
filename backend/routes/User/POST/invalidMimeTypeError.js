@@ -2,7 +2,7 @@ import express from "express";
 /**
  * 
  * @param {express.Request} request 
- * @param {express.response} response 
+ * @param {express.Response} response 
  */
 const invalidMimeTypeError = async (request,response,next) => {
   try{

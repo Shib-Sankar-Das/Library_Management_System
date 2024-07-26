@@ -27,8 +27,8 @@ const UserAuthentication: React.FC = () => {
       if(!Avatar) throw new Error('Avatar not selected');
       UPLOAD.append("Avatar",Avatar as File);
       // toast.success("successfully signed up",BottomtoastOption);
-      // const response = await fetch('/api/client-registration',{method:'POST',body:UPLOAD}).then(res=>res.json());
-      // toast.success(JSON.stringify(response),BottomtoastOption);
+      const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then(res=>res.json());
+      toast.success(JSON.stringify(response),BottomToastOption);
     }catch(e){
       toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
     }
@@ -64,7 +64,10 @@ const UserAuthentication: React.FC = () => {
         style={{
           flexDirection:Rev.flexDirection
         }}
-        onSubmit={handleSubmit}
+        onSubmit={(e)=>{
+          e.preventDefault();
+          handleSubmit();
+        }}
       >
         <ToastContainer />
         <div

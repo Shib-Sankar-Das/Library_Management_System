@@ -3,7 +3,7 @@ import models from "../../../models/index.js"
 /**
  * 
  * @param {express.Request} request 
- * @param {express.response} response 
+ * @param {express.Response} response 
  * @param {express.NextFunction} next
  */
 const duplicateCredentialError = async (request,response,next) => {

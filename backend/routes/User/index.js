@@ -4,6 +4,9 @@ import postDuplicateCredentialError from "./POST/duplicateCredentialError.js";
 import postInvalidMimeTypeError from "./POST/invalidMimeTypeError.js";
 import postInvalidCredentialError from "./POST/invalidCredentialError.js";
 import postEndPoint from "./POST/endPoint.js";
+import getInvalidCredentialError from "./GET/invalidCredentialError.js"
+import getUserNotFound from "./GET/userNotFoundError.js"
+import getEndPoint from "./GET/endPoint.js"
 const UserRouter = express.Router()
 /*
   get -> login
@@ -13,18 +16,20 @@ const UserRouter = express.Router()
  */
 UserRouter.route("/user")
   .get(
-
+    getInvalidCredentialError,
+    getUserNotFound,
+    getEndPoint
   )
   .post(
     postInvalidCredentialError,
     postInvalidMimeTypeError,
     postDuplicateCredentialError,
     postEndPoint
-  )
-  .put(
-
-  )
-  .delete(
-
   );
+  // .put(
+
+  // )
+  // .delete(
+
+  // );
 export default UserRouter;

@@ -1,8 +1,8 @@
 "use strict";
 import express from "express";
-import CoverPages from "./CoverPages";
-import ClientAvatar from "./ClientAvatar";
-import AdminAvatar from "./AdminAvatar";
+import CoverPages from "./CoverPages.js";
+import ClientAvatar from "./ClientAvatar.js";
+import AdminAvatar from "./AdminAvatar.js";
 const ImageRouter = express.Router();
 
 ImageRouter.get('image/:book_copy_id',CoverPages);
