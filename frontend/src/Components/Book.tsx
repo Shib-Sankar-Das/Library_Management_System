@@ -2,10 +2,10 @@ import React from "react";
 import { z } from "zod";
 import { bookCopySchema } from "../Validator/BookCopy";
 type props = z.infer<typeof bookCopySchema>;
-const BookView: React.FC<props> = (data: props) => {
+const Book: React.FC<props> = (data: props) => {
   return (
     <>
-      <div className="max-w-[25dvw] max-h-[60dvh] min-h-[60dvh] overflow-hidden rounded-xl hover:scale-[90%]" data-name={data.Name} data-author={data.Author} data-publisher={data.Publisher} data-subject={data.Subject} data-isbn={data.ISBN} data-publishing-date={data.PublishingDate} >
+      <div className="max-w-[280px] max-h-[200px] min-h-[200px] overflow-hidden rounded-xl hover:scale-[90%]" data-name={data.Name} data-author={data.Author} data-publisher={data.Publisher} data-subject={data.Subject} data-isbn={data.ISBN} data-publishing-date={data.PublishingDate} >
         <a href="#" className="group relative block bg-black min-h-[inherit]">
           <img
             alt=""
@@ -41,7 +41,4 @@ const BookView: React.FC<props> = (data: props) => {
     </>
   );
 };
-export default BookView;
-{
-  /*  */
-}
+export default Book;
