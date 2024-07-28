@@ -3,9 +3,7 @@ import { z } from "zod";
 import { bookCopySchema } from "../Validator/BookCopy";
 import styled from 'styled-components';
 type props = z.infer<typeof bookCopySchema>;
-const Book: React.FC<props> = (data: props) => {
-  React.useEffect(()=>{console.log(data)},[]);
-  const BookContainer = styled.div`
+const BookContainer = styled.div`
   position: relative;
   border-radius: 10px;
   width: 280px;
@@ -44,12 +42,14 @@ const Text = styled.p`
   font-size: 20px;
   font-weight: bolder;
 `;
+const Book: React.FC<props> = (data: props) => {
+  
 
   return (
     <>
       
     <BookContainer>
-        <Text style={{textAlign:'left',paddingLeft:"5px"}}>
+        <Text style={{textAlign:'left',paddingLeft:"5px", fontSize:'16px'}}>
           {"Author: "+data.Author}
           {<br/>}
           {"Publisher: "+data.Publisher}

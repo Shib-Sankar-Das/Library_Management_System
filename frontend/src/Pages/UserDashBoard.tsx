@@ -1,8 +1,9 @@
 import React from "react";
-// import { z } from "zod";
-import BooksView from "./BooksView";
+import { z } from "zod";
+import BooksView from "../Components/BooksView";
+import { BookCopyModel } from "../Validator/BookCopy";
 const UserDashBoard: React.FC = () => {
-  const [Image,SetImage] = React.useState<string>('https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=4&w=880&h=880&q=100');
+  const [Image,SetImage] = React.useState<string>('./avatar.svg');
   React.useEffect(()=>{
     const FetchData = async ()=>{
       const data = await fetch('/api/user').then(res=>res.json());
@@ -12,7 +13,43 @@ const UserDashBoard: React.FC = () => {
       })
     }
     FetchData();
-  },[])  
+  },[]);
+  const [BookData,SetBookData]  = React.useState<z.infer<typeof BookCopyModel>>([]);
+  React.useEffect(()=>{
+    fetch("api/books")
+      .then((res) => res.json())
+      .then((data) => {
+        const DATA = BookCopyModel.safeParse(data);
+        (DATA.success)?SetBookData(DATA.data):console.log(DATA.error.message);
+      });
+  },[]); 
+  
+  window.addEventListener('hashchange', ()=>{
+    switch(location.hash){
+      case "#BooksView":
+        document.getElementById('BooksView')!.className='';
+        document.getElementById('Borrow')!.className='hidden';
+        document.getElementById('Settings')!.className='hidden';
+        break;
+      case "#Borrow":
+        document.getElementById('BooksView')!.className='hidden';
+        document.getElementById('Borrow')!.className='';
+        document.getElementById('Settings')!.className='hidden';
+        break;
+      case "#Settings":
+        document.getElementById('BooksView')!.className='hidden';
+        document.getElementById('Borrow')!.className='hidden';
+        document.getElementById('Settings')!.className='';
+        break;
+
+      default:
+        document.getElementById('BooksView')!.className='';
+        document.getElementById('Borrow')!.className='hidden';
+        document.getElementById('Settings')!.className='hidden';
+        break;
+    }
+  });
+
   return (
     <>
       <div className="flex flex-row">
@@ -27,14 +64,14 @@ const UserDashBoard: React.FC = () => {
           </a>
 
           <a
-            href="#"
+            href="#BooksView"
             className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
           >
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#030303" strokeWidth="0.9600000000000002"> <path fillRule="evenodd" clipRule="evenodd" d="M9.94531 1.25H14.0551C15.4227 1.24998 16.525 1.24996 17.3919 1.36652C18.292 1.48754 19.0499 1.74643 19.6518 2.34835C20.2538 2.95027 20.5126 3.70814 20.6337 4.60825C20.7502 5.47522 20.7502 6.57754 20.7502 7.94513V16.0549C20.7502 17.4225 20.7502 18.5248 20.6337 19.3918C20.5126 20.2919 20.2538 21.0497 19.6518 21.6517C19.0499 22.2536 18.292 22.5125 17.3919 22.6335C16.525 22.75 15.4226 22.75 14.0551 22.75H9.94532C8.57773 22.75 7.4754 22.75 6.60844 22.6335C5.70833 22.5125 4.95045 22.2536 4.34854 21.6517C3.74662 21.0497 3.48773 20.2919 3.36671 19.3918C3.32801 19.1039 3.30216 18.7902 3.2849 18.4494C3.24582 18.326 3.23821 18.1912 3.26895 18.0568C3.25016 17.4649 3.25017 16.7991 3.25019 16.0549V7.94513C3.25017 6.57754 3.25015 5.47522 3.36671 4.60825C3.48773 3.70814 3.74662 2.95027 4.34854 2.34835C4.95045 1.74643 5.70833 1.48754 6.60843 1.36652C7.4754 1.24996 8.57772 1.24998 9.94531 1.25ZM4.77694 18.2491C4.79214 18.6029 4.81597 18.914 4.85333 19.1919C4.95199 19.9257 5.13243 20.3142 5.4092 20.591C5.68596 20.8678 6.07453 21.0482 6.80831 21.1469C7.56366 21.2484 8.56477 21.25 10.0002 21.25H14.0002C15.4356 21.25 16.4367 21.2484 17.1921 21.1469C17.9258 21.0482 18.3144 20.8678 18.5912 20.591C18.8679 20.3142 19.0484 19.9257 19.147 19.1919C19.2299 18.5756 19.2462 17.7958 19.2494 16.75H7.89796C6.91971 16.75 6.5777 16.7564 6.31562 16.8267C5.5963 17.0194 5.02286 17.5541 4.77694 18.2491ZM19.2502 15.25V8C19.2502 6.56458 19.2486 5.56347 19.147 4.80812C19.0484 4.07435 18.8679 3.68577 18.5912 3.40901C18.3144 3.13225 17.9258 2.9518 17.1921 2.85315C16.4367 2.75159 15.4356 2.75 14.0002 2.75H10.0002C9.09237 2.75 8.35827 2.75064 7.75019 2.7768V15.25C7.7608 15.25 7.77146 15.25 7.78217 15.25C7.8202 15.25 7.85879 15.25 7.89796 15.25H19.2502ZM6.25019 15.3114C6.13768 15.3284 6.03068 15.3501 5.92739 15.3778C5.49941 15.4925 5.10242 15.6798 4.75019 15.9259V8C4.75019 6.56458 4.75178 5.56347 4.85333 4.80812C4.95199 4.07435 5.13243 3.68577 5.4092 3.40901C5.60551 3.2127 5.85807 3.06485 6.25019 2.96027V15.3114Z" fill="#ffffff"></path> </g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M9.94531 1.25H14.0551C15.4227 1.24998 16.525 1.24996 17.3919 1.36652C18.292 1.48754 19.0499 1.74643 19.6518 2.34835C20.2538 2.95027 20.5126 3.70814 20.6337 4.60825C20.7502 5.47522 20.7502 6.57754 20.7502 7.94513V16.0549C20.7502 17.4225 20.7502 18.5248 20.6337 19.3918C20.5126 20.2919 20.2538 21.0497 19.6518 21.6517C19.0499 22.2536 18.292 22.5125 17.3919 22.6335C16.525 22.75 15.4226 22.75 14.0551 22.75H9.94532C8.57773 22.75 7.4754 22.75 6.60844 22.6335C5.70833 22.5125 4.95045 22.2536 4.34854 21.6517C3.74662 21.0497 3.48773 20.2919 3.36671 19.3918C3.32801 19.1039 3.30216 18.7902 3.2849 18.4494C3.24582 18.326 3.23821 18.1912 3.26895 18.0568C3.25016 17.4649 3.25017 16.7991 3.25019 16.0549V7.94513C3.25017 6.57754 3.25015 5.47522 3.36671 4.60825C3.48773 3.70814 3.74662 2.95027 4.34854 2.34835C4.95045 1.74643 5.70833 1.48754 6.60843 1.36652C7.4754 1.24996 8.57772 1.24998 9.94531 1.25ZM4.77694 18.2491C4.79214 18.6029 4.81597 18.914 4.85333 19.1919C4.95199 19.9257 5.13243 20.3142 5.4092 20.591C5.68596 20.8678 6.07453 21.0482 6.80831 21.1469C7.56366 21.2484 8.56477 21.25 10.0002 21.25H14.0002C15.4356 21.25 16.4367 21.2484 17.1921 21.1469C17.9258 21.0482 18.3144 20.8678 18.5912 20.591C18.8679 20.3142 19.0484 19.9257 19.147 19.1919C19.2299 18.5756 19.2462 17.7958 19.2494 16.75H7.89796C6.91971 16.75 6.5777 16.7564 6.31562 16.8267C5.5963 17.0194 5.02286 17.5541 4.77694 18.2491ZM19.2502 15.25V8C19.2502 6.56458 19.2486 5.56347 19.147 4.80812C19.0484 4.07435 18.8679 3.68577 18.5912 3.40901C18.3144 3.13225 17.9258 2.9518 17.1921 2.85315C16.4367 2.75159 15.4356 2.75 14.0002 2.75H10.0002C9.09237 2.75 8.35827 2.75064 7.75019 2.7768V15.25C7.7608 15.25 7.77146 15.25 7.78217 15.25C7.8202 15.25 7.85879 15.25 7.89796 15.25H19.2502ZM6.25019 15.3114C6.13768 15.3284 6.03068 15.3501 5.92739 15.3778C5.49941 15.4925 5.10242 15.6798 4.75019 15.9259V8C4.75019 6.56458 4.75178 5.56347 4.85333 4.80812C4.95199 4.07435 5.13243 3.68577 5.4092 3.40901C5.60551 3.2127 5.85807 3.06485 6.25019 2.96027V15.3114Z" fill="#ffffff"></path> </g></svg>
           </a>
 
           <a
-            href="#"
+            href="#Borrow"
             className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
           >
             <svg viewBox="-102.4 -102.4 1228.80 1228.80" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" stroke="#030303" strokeWidth="40.96"><path d="M182.99 146.2h585.14v402.29h73.14V73.06H109.84v877.71H512v-73.14H182.99z" fill="#ffffff"></path><path d="M256.13 219.34h438.86v73.14H256.13zM256.13 365.63h365.71v73.14H256.13zM256.13 511.91h219.43v73.14H256.13zM731.55 585.06c-100.99 0-182.86 81.87-182.86 182.86s81.87 182.86 182.86 182.86c100.99 0 182.86-81.87 182.86-182.86s-81.86-182.86-182.86-182.86z m0 292.57c-60.5 0-109.71-49.22-109.71-109.71 0-60.5 49.22-109.71 109.71-109.71 60.5 0 109.71 49.22 109.71 109.71 0.01 60.49-49.21 109.71-109.71 109.71z" fill="#ffffff"></path><path d="M758.99 692.08h-54.86v87.27l69.39 68.76 38.61-38.96-53.14-52.66z" fill="#ffffff"></path></g><g id="SVGRepo_iconCarrier"><path d="M182.99 146.2h585.14v402.29h73.14V73.06H109.84v877.71H512v-73.14H182.99z" fill="#ffffff"></path><path d="M256.13 219.34h438.86v73.14H256.13zM256.13 365.63h365.71v73.14H256.13zM256.13 511.91h219.43v73.14H256.13zM731.55 585.06c-100.99 0-182.86 81.87-182.86 182.86s81.87 182.86 182.86 182.86c100.99 0 182.86-81.87 182.86-182.86s-81.86-182.86-182.86-182.86z m0 292.57c-60.5 0-109.71-49.22-109.71-109.71 0-60.5 49.22-109.71 109.71-109.71 60.5 0 109.71 49.22 109.71 109.71 0.01 60.49-49.21 109.71-109.71 109.71z" fill="#ffffff"></path><path d="M758.99 692.08h-54.86v87.27l69.39 68.76 38.61-38.96-53.14-52.66z" fill="#ffffff"></path></g></svg>
@@ -67,7 +104,7 @@ const UserDashBoard: React.FC = () => {
          
 
           <a
-            href="#"
+            href="#Settings"
             className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:bg-gray-800 bg-gray-100"
           >
             <svg
@@ -101,11 +138,10 @@ const UserDashBoard: React.FC = () => {
         </div>
       </aside>
       <div id="BooksView" style={{width:'calc(100% - 64px)'}}>
-        
-        <BooksView/>
+        {(BookData.length!=0)?(<BooksView data={BookData}/>):(<>Loading....</>)}
       </div>
-      <div id="Borrow" className="hidden" style={{width:'calc(100% - 64px)'}}>{"Component"}</div>
-      <div id="Settings" className="hidden" style={{width:'calc(100% - 64px)'}}>{"Component"}</div>
+      <div id="Borrow" className="hidden" style={{width:'calc(100% - 64px)'}}>{"borrow Component"}</div>
+      <div id="Settings" className="hidden" style={{width:'calc(100% - 64px)'}}>{"Search Component"}</div>
       </div>
     </>
   );
