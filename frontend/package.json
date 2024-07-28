@@ -17,6 +17,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.25.0",
     "react-toastify": "^10.0.5",
+    "styled-components": "^6.1.12",
     "zod": "^3.23.8"
   },
   "devDependencies": {

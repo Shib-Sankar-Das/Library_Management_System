@@ -18,18 +18,24 @@ const UserAuthentication: React.FC = () => {
   const [Meaasge,SetMessage] = React.useState<string>("upload your picture under 40KB");
   
   const handleSubmit = async ()=> {
-    try{
-      clientSignUpSchema.parse(Data);
-      const UPLOAD = new FormData();
-      UPLOAD.append("Name",Data.Name);
-      UPLOAD.append("Password",Data.Password);
-      UPLOAD.append("Email",Data.Email);
-      if(!Avatar) throw new Error('Avatar not selected');
-      UPLOAD.append("Avatar",Avatar as File);
-      const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then(res=>res.json());
-      toast.success(JSON.stringify(response),BottomToastOption);
-    }catch(e){
-      toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
+    if(FormName=="SignUp"){
+      try{
+        clientSignUpSchema.parse(Data);
+        const UPLOAD = new FormData();
+        UPLOAD.append("Name",Data.Name);
+        UPLOAD.append("Password",Data.Password);
+        UPLOAD.append("Email",Data.Email);
+        if(!Avatar) throw new Error('Avatar not selected');
+        UPLOAD.append("Avatar",Avatar as File);
+        const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then(res=>res.json());
+        toast.success(JSON.stringify(response),BottomToastOption);
+      }catch(e){
+        toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
+      }
+    }else if(FormName == "LogIn"){
+      const login_data = {Email:Data.Email,Password:Data.Password};
+      const URL_params = new URLSearchParams(login_data).toString();
+      fetch("/api/user?"+URL_params).then(res=>res.json()).then(console.log);
     }
   }
   
