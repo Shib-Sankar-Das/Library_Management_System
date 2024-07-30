@@ -48,7 +48,7 @@ const Homepage: React.FC = () => {
         <section className="hero bg-blue-500 text-white py-20 md:py-32" style={{backgroundImage:"url('./back.jpg')"}}>
           <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-8 md:mb-0">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-right">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-right">
                 Manage Your Library with Ease
               </h1>
               <p className="text-xl mb-8" data-aos="fade-right" data-aos-delay="200">Streamline your library operations with our powerful management system.</p>

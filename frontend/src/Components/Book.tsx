@@ -48,7 +48,18 @@ const Book: React.FC<props> = (data: props) => {
   return (
     <>
       
-    <BookContainer>
+    <BookContainer onContextMenu={(e)=>{
+      e.preventDefault();
+     (document.getElementById(data._id)! as HTMLDialogElement).showModal();
+     
+    }}>
+        <dialog id={data._id} className=" rounded-md  p-2 bg-blue-800 absolute">
+          <button onClick={()=>{
+            (document.getElementById(data._id)! as HTMLDialogElement).close();
+          }} className="btn bg-blue-700 rounded-md">
+          {"Borrow "+data.Name.slice(0,20)+'...'}
+          </button> 
+        </dialog>
         <Text style={{textAlign:'left',paddingLeft:"5px", fontSize:'16px'}}>
           {"Author: "+data.Author}
           {<br/>}
