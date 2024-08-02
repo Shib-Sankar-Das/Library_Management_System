@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 /**
  * @typedef AdminObject
  * @property {string} Name
@@ -54,6 +55,10 @@ const adminSchema = new mongoose.Schema({
     type:Buffer,
     required:[true,'profile pic is required.']
   }
+});
+adminSchema.pre('save',function(next){
+  this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(8));
+  next();
 });
 /**
  * @type {mongoose.Model<AdminObject>}

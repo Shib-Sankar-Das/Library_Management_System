@@ -16,12 +16,11 @@ const userNotFoundError = async (request,response,next) => {
       delete doc['__v'];
       delete doc['Password'];
       doc['Image'] = '/api/image/'+doc['_id'];
-      delete doc['_id'];
       request.query = doc;
       next();
     }
   }catch(e){
-    response.json({err:e.message});
+    response.status(404).json({err:e.message});
   }
 }
 export default userNotFoundError;

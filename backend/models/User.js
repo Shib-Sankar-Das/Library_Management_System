@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save',function(next){
   this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(8));
   next();
-})
+});
 /**
  * @type {mongoose.Model<UserObject>}
  */

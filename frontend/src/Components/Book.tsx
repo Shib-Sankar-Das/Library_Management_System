@@ -2,6 +2,8 @@ import React from "react";
 import { z } from "zod";
 import { bookCopySchema } from "../Validator/BookCopy";
 import styled from 'styled-components';
+import UV from "../Validator/UserValidator";
+import BorrowRequestValidator from "../Validator/BorrowRequestObject";
 type props = z.infer<typeof bookCopySchema>;
 const BookContainer = styled.div`
   position: relative;
@@ -42,9 +44,23 @@ const Text = styled.p`
   font-size: 20px;
   font-weight: bolder;
 `;
-const Book: React.FC<props> = (data: props) => {
-  
-
+const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
+  React.useEffect(()=>{
+    const plusOneMonth = (new Date());
+    plusOneMonth.setMonth(plusOneMonth.getMonth()+1);
+    const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
+    const BorrowRequest :z.infer<typeof BorrowRequestValidator> = {
+      BorrowDate:YYYY_MM_DD.format(new Date()),
+      RenewalDate:YYYY_MM_DD.format(plusOneMonth),
+      BookID:data._id,
+      ISBN:data.ISBN,
+      UserID:user._id,
+      UserName:user.Name,
+      UserEmail:user.Email,
+      BookName:data.Name,
+    };
+    console.log(BorrowRequest);  
+  },[]);
   return (
     <>
       
@@ -74,7 +90,7 @@ const Book: React.FC<props> = (data: props) => {
           backgroundRepeat:'no-repeat',
           backgroundSize:'cover'
         }}>
-        <Text style={{backdropFilter:'blur(5px)'}}>{data.Name}</Text>
+        <Text style={{backdropFilter:'blur(5px)',backgroundColor:"#ffffff40",width:'100%'}}>{data.Name}</Text>
       </Cover>
     </BookContainer>
     </>

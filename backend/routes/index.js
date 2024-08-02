@@ -1,3 +1,4 @@
+"use strict";
 import express from "express"
 import BorrowBook from "./BorrowBook/index.js";
 import ViewBooks from "./Books/index.js";

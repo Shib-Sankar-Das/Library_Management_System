@@ -1,10 +1,10 @@
-import express from "express";
+
 /**
- * @name endPoint end point of a get request sends data for valid request 
- * @param {express.Request} req
- * @param {express.Response} res
+ * 
+ * @param {import("express").Request} request 
+ * @param {import("express").Response} response
  */
-const endPoint=(req,res)=>{
-  
+const endPoint = async (request, response) => {
+  response.status(200).json(request.query);  
 }
 export default endPoint;

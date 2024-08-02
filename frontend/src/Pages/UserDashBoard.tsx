@@ -2,15 +2,24 @@ import React from "react";
 import { z } from "zod";
 import BooksView from "../Components/BooksView";
 import { BookCopyModel } from "../Validator/BookCopy";
+import UserValidator from "../Validator/UserValidator";
+import { ToastContainer, toast } from 'react-toastify';
+import BottomToastOption from "../Options/BottomToastOption";
 const UserDashBoard: React.FC = () => {
   const [Image,SetImage] = React.useState<string>('./avatar.svg');
+  const [UserData,SetUserData] = React.useState<z.infer<typeof UserValidator>|null>(null);
   React.useEffect(()=>{
     const FetchData = async ()=>{
       const data = await fetch('/api/user').then(res=>res.json());
-      // console.log(data);
+      try{
+        UserValidator.parse(data);
+        SetUserData(data);
+      }catch(e){
+        toast.success(JSON.stringify(e),BottomToastOption);
+      }
       SetImage(prev=>{
         return data?.Image??prev;
-      })
+      });
     }
     FetchData();
   },[]);
@@ -23,35 +32,30 @@ const UserDashBoard: React.FC = () => {
         (DATA.success)?SetBookData(DATA.data):console.log(DATA.error.message);
       });
   },[]); 
-  
+  const focusHandler = (id:string)=>{
+    const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
+    ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
+  }
   window.addEventListener('hashchange', ()=>{
     switch(location.hash){
       case "#BooksView":
-        document.getElementById('BooksView')!.className='';
-        document.getElementById('Borrow')!.className='hidden';
-        document.getElementById('Settings')!.className='hidden';
+        focusHandler('BooksView')
         break;
       case "#Borrow":
-        document.getElementById('BooksView')!.className='hidden';
-        document.getElementById('Borrow')!.className='';
-        document.getElementById('Settings')!.className='hidden';
+        focusHandler('Borrow')
         break;
       case "#Settings":
-        document.getElementById('BooksView')!.className='hidden';
-        document.getElementById('Borrow')!.className='hidden';
-        document.getElementById('Settings')!.className='';
+        focusHandler('Settings')
         break;
-
       default:
-        document.getElementById('BooksView')!.className='';
-        document.getElementById('Borrow')!.className='hidden';
-        document.getElementById('Settings')!.className='hidden';
+        focusHandler('BooksView')
         break;
     }
   });
 
   return (
     <>
+      <ToastContainer />
       <div className="flex flex-row">
       <aside className="flex flex-col items-center w-16 h-screen py-8 overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
         <nav className="flex flex-col flex-1 space-y-6">
@@ -138,7 +142,7 @@ const UserDashBoard: React.FC = () => {
         </div>
       </aside>
       <div id="BooksView" style={{width:'calc(100% - 64px)'}}>
-        {(BookData.length!=0)?(<BooksView data={BookData}/>):(<>Loading....</>)}
+        {(BookData.length!=0 && UserData!=null)?(<BooksView data={BookData} user={UserData}/>):(<>Loading....</>)}
       </div>
       <div id="Borrow" className="hidden" style={{width:'calc(100% - 64px)'}}>{"borrow Component"}</div>
       <div id="Settings" className="hidden" style={{width:'calc(100% - 64px)'}}>{"Search Component"}</div>
@@ -147,6 +151,3 @@ const UserDashBoard: React.FC = () => {
   );
 };
 export default UserDashBoard;
-/**
- 
- */

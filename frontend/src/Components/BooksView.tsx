@@ -1,13 +1,15 @@
 import React from "react";
 import { z } from "zod";
 import { BookCopyModel } from "../Validator/BookCopy";
+import UV from "../Validator/UserValidator";
 import Book from "./Book";
-const BooksView : React.FC<{data:z.infer<typeof BookCopyModel>}> = ({data}:{data:z.infer<typeof BookCopyModel>}) =>{
+const BooksView : React.FC<{data:z.infer<typeof BookCopyModel>,user:z.infer<typeof UV>}> = ({data,user}:{data:z.infer<typeof BookCopyModel>,user:z.infer<typeof UV>}) =>{
   const SELECT_OPTION = ["Name","Author","ISBN","Publisher","Subject"];
   const [Attribute,SetAttribute] = React.useState<string>(SELECT_OPTION[0]);
   const [Element,SetElement] = React.useState<z.infer<typeof BookCopyModel>>([]);
   const [Search,SetSearch] = React.useState<string>('');
   React.useEffect(()=>{
+    console.log(user);
     SetElement(data);
   },[]);
   return (
@@ -59,7 +61,7 @@ const BooksView : React.FC<{data:z.infer<typeof BookCopyModel>}> = ({data}:{data
       </div>
     </div>
     {(Element.length!=0)?<div className="grid grid-flow-row grid-cols-[repeat(auto-fill,300px)] auto-rows-[280px] min-w-full m-0 p-2 justify-center align-middle gap-1.5 overflow-y-auto max-h-[90dvh]">
-      {Element.map((item) => (<Book key={item._id} {...item} />))}
+      {Element.map((item) => (<Book key={item._id} data={item} user={user} />))}
     </div>:<>{"Nothing found"}</>}
     </>
   );

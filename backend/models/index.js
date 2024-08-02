@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
+"use strict";
 import Book from "./Book.js";
 import User from "./User.js";
 import Admin from "./Admin.js";
 import Borrow from "./Borrow.js";
+
 export default {
   Schemas:{
     bookCopySchema:Book.bookCopySchema,
