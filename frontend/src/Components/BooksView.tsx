@@ -60,7 +60,7 @@ const BooksView : React.FC<{data:z.infer<typeof BookCopyModel>,user:z.infer<type
         </select>
       </div>
     </div>
-    {(Element.length!=0)?<div className="grid grid-flow-row grid-cols-[repeat(auto-fill,300px)] auto-rows-[280px] min-w-full m-0 p-2 justify-center align-middle gap-1.5 overflow-y-auto max-h-[90dvh]">
+    {(Element.length!=0)?<div className="grid grid-flow-row grid-cols-[repeat(auto-fill,300px)] auto-rows-[280px] min-w-full m-0 p-2 justify-center align-middle place-items-center gap-1.5 overflow-y-auto max-h-[90dvh]">
       {Element.map((item) => (<Book key={item._id} data={item} user={user} />))}
     </div>:<>{"Nothing found"}</>}
     </>

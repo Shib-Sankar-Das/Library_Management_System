@@ -4,6 +4,8 @@ import { bookCopySchema } from "../Validator/BookCopy";
 import styled from 'styled-components';
 import UV from "../Validator/UserValidator";
 import BorrowRequestValidator from "../Validator/BorrowRequestObject";
+import { toast } from 'react-toastify';
+import BottomToastOption from "../Options/BottomToastOption";
 type props = z.infer<typeof bookCopySchema>;
 const BookContainer = styled.div`
   position: relative;
@@ -45,32 +47,50 @@ const Text = styled.p`
   font-weight: bolder;
 `;
 const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
-  React.useEffect(()=>{
+  const RequestHandler=()=>{
     const plusOneMonth = (new Date());
     plusOneMonth.setMonth(plusOneMonth.getMonth()+1);
     const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
     const BorrowRequest :z.infer<typeof BorrowRequestValidator> = {
       BorrowDate:YYYY_MM_DD.format(new Date()),
       RenewalDate:YYYY_MM_DD.format(plusOneMonth),
-      BookID:data._id,
       ISBN:data.ISBN,
       UserID:user._id,
       UserName:user.Name,
       UserEmail:user.Email,
       BookName:data.Name,
     };
-    console.log(BorrowRequest);  
-  },[]);
+    fetch('/api/borrow-book',
+      { 
+        method:"post",
+        body:JSON.stringify(BorrowRequest),
+        headers:{
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>{
+        if(res.status==200)
+          toast.success('request successfull',BottomToastOption);
+        else
+          toast.error('request successfull',BottomToastOption);
+        return res.json()
+      })
+      .then(console.table)
+      .catch(console.error)
+      .finally(()=>{
+        console.log(data.Name+"borrow req send\n");
+      });
+  }
   return (
     <>
-      
     <BookContainer onContextMenu={(e)=>{
       e.preventDefault();
-     (document.getElementById(data._id)! as HTMLDialogElement).showModal();
-     
+      (document.getElementById(data._id)! as HTMLDialogElement).showModal();
     }}>
+      {/* <ToastContainer /> */}
         <dialog id={data._id} className=" rounded-md  p-2 bg-blue-800 absolute">
           <button onClick={()=>{
+            RequestHandler();
             (document.getElementById(data._id)! as HTMLDialogElement).close();
           }} className="btn bg-blue-700 rounded-md">
           {"Borrow "+data.Name.slice(0,20)+'...'}

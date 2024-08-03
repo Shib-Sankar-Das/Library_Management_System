@@ -66,7 +66,6 @@ const borrowSchema = new mongoose.Schema({
   UserEmail:{
     type:String,
     required:true,
-    unique:true,
     validator:{
       /**
        * @name vlidator validates Email
