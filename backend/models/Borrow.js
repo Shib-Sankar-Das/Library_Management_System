@@ -9,6 +9,8 @@ import mongoose from "mongoose";
  * @property {string} UserEmail
  * @property {string} ISBN
  * @property {boolean} [Approved]
+ * @property {boolean} Returning
+ * @property {boolean} Retaining
  * @property {mongoose.Schema.ObjectId} [BookID]
  */
 
@@ -89,6 +91,14 @@ const borrowSchema = new mongoose.Schema({
       validator:ISBN_Validator,
       message: (props) => `${props.value} is not a valid ISBN!`
     }
+  },
+  Returning:{
+    type:Boolean,
+    default:false,
+  },
+  Retaining:{
+    type:Boolean,
+    default:true,
   },
   Approved:{
     type:Boolean,

@@ -72,14 +72,11 @@ const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
         if(res.status==200)
           toast.success('request successfull',BottomToastOption);
         else
-          toast.error('request successfull',BottomToastOption);
-        return res.json()
+          toast.error('request not successfull',BottomToastOption);
+        return res.json();
       })
       .then(console.table)
-      .catch(console.error)
-      .finally(()=>{
-        console.log(data.Name+"borrow req send\n");
-      });
+      .catch(console.error);
   }
   return (
     <>
