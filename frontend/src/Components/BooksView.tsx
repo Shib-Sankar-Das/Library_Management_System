@@ -3,13 +3,16 @@ import { z } from "zod";
 import { BookCopyModel } from "../Validator/BookCopy";
 import UV from "../Validator/UserValidator";
 import Book from "./Book";
-const BooksView : React.FC<{data:z.infer<typeof BookCopyModel>,user:z.infer<typeof UV>}> = ({data,user}:{data:z.infer<typeof BookCopyModel>,user:z.infer<typeof UV>}) =>{
+interface BooksViewProps {
+  data:z.infer<typeof BookCopyModel>,
+  user:z.infer<typeof UV>
+}
+const BooksView : React.FC<BooksViewProps> = ({data,user}:BooksViewProps) =>{
   const SELECT_OPTION = ["Name","Author","ISBN","Publisher","Subject"];
   const [Attribute,SetAttribute] = React.useState<string>(SELECT_OPTION[0]);
   const [Element,SetElement] = React.useState<z.infer<typeof BookCopyModel>>([]);
   const [Search,SetSearch] = React.useState<string>('');
   React.useEffect(()=>{
-    console.log(user);
     SetElement(data);
   },[]);
   return (

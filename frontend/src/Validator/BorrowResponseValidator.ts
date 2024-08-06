@@ -15,14 +15,14 @@ const ISBN_Validator = (isbn:string) => {
 }
 
 export const BorrowResponseValidator= z.object({
-  BorrowDate:z.string().datetime().optional(),
+  BorrowDate:z.string().datetime(),
   RenewalDate:z.string({required_error:'renewal date is required'}).datetime(),
   UserName:z.string({required_error:'User name is required'}).min(4,'too short name').max(50,'too long name'),
   UserEmail:z.string({required_error:"Email field is required"}).email("not a valid email"),
   BookName:z.string({required_error:'Book name is required'}),
   UserID:z.string({required_error:'UserID required'}).length(24),
   ISBN:z.string({required_error:'ISBN required'}).min(10).max(13).refine(ISBN_Validator,{message:'not a valid ISBN'}),
-  Approved:z.boolean().optional(),
+  Approved:z.boolean(),
   Returning:z.boolean(),
   Retaining:z.boolean(),
   _id:z.string({required_error:'book id is required'}).length(24),
