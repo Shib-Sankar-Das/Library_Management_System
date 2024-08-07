@@ -19,7 +19,7 @@ const BorrowView : React.FC<BorrowViewProps> = ({data,user}:BorrowViewProps) =>{
   return(
   <>
   <div className="bg-[#00000000] p-2">
-      <div className="max-w-7xl mx-auto flex items-center max-h-[10dvh]">
+      <div className="max-w-7xl mx-auto flex items-center max-h-[10dvh] ">
         <input
           type="text"
           value={Search}
