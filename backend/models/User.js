@@ -58,6 +58,18 @@ userSchema.pre('save',function(next){
   this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(8));
   next();
 });
+userSchema.pre('updateOne',async function(next){
+  const update = this.getUpdate();
+  const doc = await this.model.findOne(this.getQuery());
+  if (update.$set && update.$set.Password === "") 
+    update.$set.Password = doc.Password;
+  else if(bcrypt.compareSync(update.$set.Password,doc.Password))
+    update.$set.Password = doc.Password;
+  else
+    update.$set.Password = bcrypt.hashSync(update.$set.Password, bcrypt.genSaltSync(8));
+  //this.setUpdate(update);
+  next();
+});
 /**
  * @type {mongoose.Model<UserObject>}
  */

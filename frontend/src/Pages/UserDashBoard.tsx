@@ -50,7 +50,7 @@ const UserDashBoard: React.FC = () => {
     const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
     ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
   }
-  window.addEventListener('hashchange', ()=>{
+  const focusChanger = () => {
     switch(location.hash){
       case "#BooksView":
         focusHandler('BooksView')
@@ -65,7 +65,9 @@ const UserDashBoard: React.FC = () => {
         focusHandler('BooksView')
         break;
     }
-  });
+  }
+  window.addEventListener('hashchange', focusChanger);
+  window.addEventListener('load', focusChanger);
 
   return (
     <>
