@@ -1,13 +1,7 @@
 "use strict";
 import express from 'express'
-import postDuplicateCredentialError from "./POST/duplicateCredentialError.js";
-import postInvalidMimeTypeError from "./POST/invalidMimeTypeError.js";
-import postInvalidCredentialError from "./POST/invalidCredentialError.js";
-import postEndPoint from "./POST/endPoint.js";
-import getInvalidCredentialError from "./GET/invalidCredentialError.js"
-import getUserNotFound from "./GET/userNotFoundError.js"
-import getInvalidCookiesError from "./GET/invalidCookiesError.js"
-import getEndPoint from "./GET/endPoint.js"
+import POST from './POST/methods.js';
+import GET from "./GET/methods.js"
 const UserRouter = express.Router()
 /*
   get -> login
@@ -17,16 +11,16 @@ const UserRouter = express.Router()
  */
 UserRouter.route("/user")
   .get(
-    getInvalidCookiesError,
-    getInvalidCredentialError,
-    getUserNotFound,
-    getEndPoint
+    GET.invalidCookiesError,
+    GET.invalidCredentialError,
+    GET.userNotFoundError,
+    GET.endPoint
   )
   .post(
-    postInvalidCredentialError,
-    postInvalidMimeTypeError,
-    postDuplicateCredentialError,
-    postEndPoint
+    POST.invalidCredentialError,
+    POST.invalidMimeTypeError,
+    POST.duplicateCredentialError,
+    POST.endPoint
   );
   // .put(
 
