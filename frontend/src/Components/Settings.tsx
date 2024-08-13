@@ -20,7 +20,7 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
     console.table(Avatar);
     console.group('FormData');
     for(const item of Update)
-      console.log(item);
+      console.log({...item});
     console.groupEnd();    
     // try {  
     //   const response = await fetch("/api/user", {
@@ -42,7 +42,7 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
     
     const Image: HTMLImageElement =
       document.querySelector<HTMLImageElement>("img#avatar-update")!;
-    SetAvatar(() => {
+    SetAvatar((prevAvatar) => {
       try {
         if (
           e.target.files &&
@@ -56,7 +56,7 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
           return e.target.files[0];
         } else {
           toast.error("image must be under 40KB retaining previous image", BottomToastOption);
-          return undefined;
+          return prevAvatar;
         }
       } catch (e) {
         Image.src = "./invalid.svg";

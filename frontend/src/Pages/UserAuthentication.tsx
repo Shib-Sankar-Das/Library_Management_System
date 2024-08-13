@@ -27,7 +27,11 @@ const UserAuthentication: React.FC = () => {
         UPLOAD.append("Email",Data.Email);
         if(!Avatar) throw new Error('Avatar not selected');
         UPLOAD.append("Avatar",Avatar as File);
-        const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then(res=>res.json());
+        const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then((res)=>{
+          if(res.status!=200)
+            toast.error(res.statusText,BottomToastOption);
+          return res.json();
+        });
         toast.success(JSON.stringify(response),BottomToastOption);
       }catch(e){
         toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
@@ -35,7 +39,11 @@ const UserAuthentication: React.FC = () => {
     }else if(FormName == "LogIn"){
       const login_data = {Email:Data.Email,Password:Data.Password};
       const URL_params = new URLSearchParams(login_data).toString();
-      fetch("/api/user?"+URL_params).then(res=>res.json()).then(console.log);
+      fetch("/api/user?"+URL_params).then((res)=>{
+        if(res.status!=200)
+          toast.error(res.statusText,BottomToastOption);
+        return res.json();
+      }).then(console.log);
     }
   }
   

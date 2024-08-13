@@ -70,9 +70,9 @@ const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
       })
       .then((res)=>{
         if(res.status==200)
-          toast.success('request successfull',BottomToastOption);
+          toast.success(res.statusText,BottomToastOption);
         else
-          toast.error('request not successfull',BottomToastOption);
+          toast.error(res.statusText,BottomToastOption);
         return res.json();
       })
       .then(console.table)

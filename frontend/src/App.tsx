@@ -12,7 +12,7 @@ const App: React.FC = () => {
         <Route path="/user-auth" element={<UserAuthentication />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/user-dashboard" element={<UserDashBoard />} />
-        <Route path="/admin-authentication" element={<AdminAuthentication />} />
+        <Route path="/admin-auth" element={<AdminAuthentication />} />
       </Routes>
     );
 };

@@ -14,12 +14,17 @@ const UserDashBoard: React.FC = () => {
   const [BorrowData,SetBorrowData] = React.useState<z.infer<typeof BorrowResponses>>([]);
   React.useEffect(()=>{
     const FetchUserhData = async ()=>{
-      const data = await fetch('/api/user').then(res=>res.json());
+      const data = await fetch('/api/user').then((res)=>{
+        if(res.status!=200)
+          toast.error(res.statusText,BottomToastOption);
+        return res.json();
+      });
       try{
         UserValidator.parse(data);
         SetUserData(data);
       }catch(e){
-        toast.success(JSON.stringify(e),BottomToastOption);
+        console.log(e);
+        // toast.error(JSON.stringify(e),BottomToastOption);
       }
       SetImage(prev=>{
         return data?.Image??prev;
@@ -27,7 +32,11 @@ const UserDashBoard: React.FC = () => {
     }
     FetchUserhData();
     const FetchBorrowData = async ()=>{
-      const data = await fetch('/api/borrow-book').then(res=>res.json());
+      const data = await fetch('/api/borrow-book').then((res)=>{
+        if(res.status!=200)
+          toast.error(res.statusText,BottomToastOption);
+        return res.json();
+      });
       try{
         BorrowResponses.parse(data);
         SetBorrowData(data);
@@ -40,7 +49,11 @@ const UserDashBoard: React.FC = () => {
   const [BookData,SetBookData]  = React.useState<z.infer<typeof BookCopyModel>>([]);
   React.useEffect(()=>{
     fetch("api/books")
-      .then((res) => res.json())
+      .then((res)=>{
+        if(res.status!=200)
+          toast.error(res.statusText,BottomToastOption);
+        return res.json();
+      })
       .then((data) => {
         const DATA = BookCopyModel.safeParse(data);
         (DATA.success)?SetBookData(DATA.data):console.log(DATA.error.message);
