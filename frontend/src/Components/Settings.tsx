@@ -22,18 +22,18 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
     for(const item of Update)
       console.log({...item});
     console.groupEnd();    
-    // try {  
-    //   const response = await fetch("/api/user", {
-    //     method: "PUT",
-    //     body: Update,
-    //   }).then((res) => res.json());
-    //   toast.success(JSON.stringify(response), BottomToastOption);
-    // } catch (e) {
-    //   toast.error(
-    //     (e as { message: string }).message.substring(0, 47) + "...",
-    //     BottomToastOption
-    //   );
-    // }
+    try {  
+      const response = await fetch("/api/user", {
+        method: "PUT",
+        body: Update,
+      }).then((res) => res.json());
+      toast.success(JSON.stringify(response), BottomToastOption);
+    } catch (e) {
+      toast.error(
+        (e as { message: string }).message.substring(0, 47) + "...",
+        BottomToastOption
+      );
+    }
   };
   React.useEffect(()=>{
 

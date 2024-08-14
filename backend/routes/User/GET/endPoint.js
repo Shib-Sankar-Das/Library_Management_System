@@ -13,9 +13,9 @@ const endPoint = async (request, response) => {
     const TenYearsFromNow = new Date();
     TenYearsFromNow.setFullYear(TenYearsFromNow.getFullYear() + 10);
     response.cookie('_id', USER_HTTP_TOKEN, { httpOnly: true, expires: TenYearsFromNow });
-    response.send(request.query)
+    response.status(200).send(request.query)
   } catch (e) {
-    response.status(200).json({ err: e.message });
+    response.status(500).json({ err: e.message });
   }
 }
 export default endPoint;

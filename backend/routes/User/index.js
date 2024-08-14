@@ -2,6 +2,7 @@
 import express from 'express'
 import POST from './POST/methods.js';
 import GET from "./GET/methods.js"
+import PUT from "./PUT/methods.js"
 const UserRouter = express.Router()
 /*
   get -> login
@@ -21,10 +22,13 @@ UserRouter.route("/user")
     POST.invalidMimeTypeError,
     POST.duplicateCredentialError,
     POST.endPoint
+  )
+  .put(
+    PUT.invalidCookiesError,
+    PUT.updateTextFields,
+    PUT.updateProfilePicture,
+    PUT.endPoint
   );
-  // .put(
-
-  // )
   // .delete(
 
   // );
