@@ -26,8 +26,18 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
       const response = await fetch("/api/user", {
         method: "PUT",
         body: Update,
-      }).then((res) => res.json());
-      toast.success(JSON.stringify(response), BottomToastOption);
+      }).then((res) => {
+        if (res.status == 200){
+          toast.success(JSON.stringify(res.statusText), BottomToastOption);
+          setTimeout(()=>{
+            window.location.reload();
+          },1000);
+        }
+        else
+          toast.error(JSON.stringify(res.statusText), BottomToastOption);        
+        return res.json();
+      });
+      console.log(response);
     } catch (e) {
       toast.error(
         (e as { message: string }).message.substring(0, 47) + "...",
@@ -84,7 +94,7 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
         </label>
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3 p-4  rounded-md shadow-lg mt-4 md:mt-0">
-        <h2 className="text-2xl font-semibold mb-4">{"Update"}</h2>
+        <h2 className="text-2xl font-semibold mb-4">{"Update Profile"}</h2>
         <div>
           <div className="mb-4">
             <input

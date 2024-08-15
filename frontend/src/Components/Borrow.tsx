@@ -10,7 +10,10 @@ const Borrow: React.FC<BorrowProp> = ({data,user}:BorrowProp) => {
   const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
   const BorrowDate = new Date(data.BorrowDate);
   const ReturnDate = new Date(data.RenewalDate);
-  const ShowData = {"ID":data._id,"Book":data.BookName,"ISBN":data.ISBN,"Approved":data.Approved,"Borrow":YYYY_MM_DD.format(BorrowDate),"Renewal":YYYY_MM_DD.format(ReturnDate)}
+  const ShowData = {"ID":data._id,"Book":data.BookName,"ISBN":data.ISBN,"Approved":data.Approved,"Borrow":YYYY_MM_DD.format(BorrowDate),"Renewal":YYYY_MM_DD.format(ReturnDate)};
+  React.useEffect(()=>{
+    console.log(data);
+  },[]);
   return (
     <>
       <div className="overflow-x-auto bg-slate-900 rounded-md hover:scale-[90%] m-1 p-1">

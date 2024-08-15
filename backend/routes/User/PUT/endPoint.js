@@ -7,6 +7,8 @@ import model from './../../../models/index.js'
  */
 
 const endPoint = async (request, response) => {
-  response.status(200).json(request.body);
+  let data = {...request.body};
+  delete data["_id"];
+  response.status(200).json(data);
 }
 export default endPoint;

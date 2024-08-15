@@ -8,11 +8,15 @@ import model from './../../../models/index.js'
 
 const updateProfilePicture = async (request, response, next) => {
   try{
+    // console.log("updateProfilePicture");
     /**
      * @type {import("express-fileupload").UploadedFile}
      */
     let profile = request.files.Avatar;
-    await model.Models.UserModel.findByIdAndUpdate(request.body._id,{Avatar:profile.data});
+    await model.Models.UserModel.findByIdAndUpdate(
+      request.body._id,
+      {Avatar:profile.data}
+    );
     request.body['Image'] = '/api/image/'+request.body['_id'];
     next();
   }catch(e){

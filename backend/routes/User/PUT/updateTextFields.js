@@ -13,15 +13,19 @@ const updateTextFields = async (request, response, next) => {
     /**
      * @type {z.infer<typeof ClientUpdate>}
      */
-    let data = request.body;
+    let data = {...request.body};
     ClientUpdate.parse(data);
     const {_id} = data;
     delete data._id;
-    request.body = await model.Models.UserModel.findByIdAndUpdate(_id,data,{new:true});
+    if(Object.entries(data).length){
+      const updatedData = await model.Models.UserModel.findByIdAndUpdate(_id,data,{new:true});
+      request.body = {"Name":updatedData.Name,"Email":updatedData.Email,"_id":_id};
+      await model.Models.BorrowModel.updateMany({UserID:request.body._id},{UserName:updatedData.Name,UserEmail:updatedData.Email});
+    }
     if(request.files?.Avatar)
       next();
     else
-      response.status(200).json(data);
+      response.status(200).json({Name:updatedData.Name,Email:updatedData.Email});
   }catch(e){
     response.status(401).send({"message":e.message});
   }

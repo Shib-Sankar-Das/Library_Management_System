@@ -11,8 +11,11 @@ import BorrowView from "../Components/BorrowView";
 const UserDashBoard: React.FC = () => {
   const [Image,SetImage] = React.useState<string>('./avatar.svg');
   const [UserData,SetUserData] = React.useState<z.infer<typeof UserValidator>|null>(null);
-  const [BorrowData,SetBorrowData] = React.useState<z.infer<typeof BorrowResponses>>([]);
+  const [BorrowData,SetBorrowData] = React.useState<z.infer<typeof BorrowResponses>|null>(null);
   React.useEffect(()=>{
+    onload=()=>{
+      location.hash="";
+    }
     const FetchUserhData = async ()=>{
       const data = await fetch('/api/user').then((res)=>{
         if(res.status!=200)
@@ -46,7 +49,7 @@ const UserDashBoard: React.FC = () => {
     } 
     FetchBorrowData();
   },[]);
-  const [BookData,SetBookData]  = React.useState<z.infer<typeof BookCopyModel>>([]);
+  const [BookData,SetBookData]  = React.useState<z.infer<typeof BookCopyModel>|null>(null);
   React.useEffect(()=>{
     fetch("api/books")
       .then((res)=>{
@@ -58,29 +61,38 @@ const UserDashBoard: React.FC = () => {
         const DATA = BookCopyModel.safeParse(data);
         (DATA.success)?SetBookData(DATA.data):console.log(DATA.error.message);
       });
-  },[]); 
-  const focusHandler = (id:string)=>{
-    const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
-    ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
-  }
-  const focusChanger = () => {
-    switch(location.hash){
-      case "#BooksView":
-        focusHandler('BooksView')
-        break;
-      case "#Borrow":
-        focusHandler('Borrow')
-        break;
-      case "#Settings":
-        focusHandler('Settings')
-        break;
-      default:
-        focusHandler('BooksView')
-        break;
+  },[]);
+
+  React.useLayoutEffect(()=>{
+    const focusHandler = (id:string)=>{
+      // console.log("load/hashchange")
+      const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
+      ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
     }
-  }
-  window.addEventListener('hashchange', focusChanger);
-  window.addEventListener('load', focusChanger);
+    const focusChanger = () => {
+      switch(location.hash){
+        case "#BooksView":
+          focusHandler('BooksView')
+          break;
+        case "#Borrow":
+          focusHandler('Borrow')
+          break;
+        case "#Settings":
+          focusHandler('Settings')
+          break;
+        default:
+          focusHandler('BooksView')
+          break;
+      }
+    }
+    window.addEventListener("load", focusChanger);
+    window.addEventListener("hashchange", focusChanger);
+    
+    return () => {
+      window.document.removeEventListener("DOMContentLoaded", focusChanger);
+      window.removeEventListener("hashchange", focusChanger);
+    };
+  },[]);
 
   return (
     <>
@@ -138,16 +150,33 @@ const UserDashBoard: React.FC = () => {
             <img
               className="object-cover w-8 h-8 rounded-full"
               src={Image}
-              alt=""
+              alt="user profile image"
             />
           </a>
         </div>
       </aside>
       <div id="BooksView" style={{width:'calc(100% - 64px)'}}>
-        {(BookData.length!=0 && UserData!=null)?(<BooksView data={BookData} user={UserData}/>):(<>Loading....</>)}
+        {
+          (BookData!=null)?
+            (
+              (BookData.length!=0 && UserData!=null)?
+                (<BooksView data={BookData} user={UserData}/>):
+                (<>No Records found</>)
+            ):
+            (<>Loading....</>)
+        }
       </div>
       <div id="Borrow" className="hidden" style={{width:'calc(100% - 64px)'}}>
-        {(BorrowData.length!=0 && UserData!=null)?(<BorrowView data={BorrowData} user={UserData}/>):(<>Loading....</>)}
+        {
+          (BorrowData!=null)?
+            (
+              (BorrowData.length!=0 && UserData!=null)?
+                (<BorrowView data={BorrowData} user={UserData}/>):
+                (<>No Records found</>)
+            ):
+            (<>Loading....</>)
+            
+        }
       </div>
       <div id="Settings" className="hidden" style={{width:'calc(100% - 64px)'}}>{(UserData!=null)?(<Settings data={UserData}/>):(<>Loading....</>)}</div>
       </div>
