@@ -85,12 +85,6 @@ const AdminAuthentication:React.FC=()=>{
           >
             Password
           </label>
-          <a
-            href="#"
-            className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
-          >
-            Forget Password?
-          </a>
         </div>
 
         <input

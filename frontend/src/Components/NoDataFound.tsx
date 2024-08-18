@@ -11,7 +11,7 @@ const NoDataFound: React.FC = () => {
            No data found
           </h3>
           <p className="text-gray-600 mt-3">
-            Sorry, the page you are looking for could not be found or has been removed.
+            We found no data on the server
           </p>
         </div>
       </div>

@@ -21,7 +21,12 @@ try {
   APP.use(cookieParser());
   APP.use(express.urlencoded({ extended: true }));
   APP.use(express.static(path.join(__dirname, 'assets')));
-  APP.use(expressFileUpload({limits: {fileSize: 40 * 1024},abortOnLimit:true}));
+  APP.use(expressFileUpload({
+    limits: {
+      fileSize: 40 * 1024
+    },
+    abortOnLimit:true
+  }));
   APP.use('/',routes);
 
   APP.listen(process.env.PORT, () => {

@@ -12,7 +12,7 @@ const Borrow: React.FC<BorrowProp> = ({data,user}:BorrowProp) => {
   const ReturnDate = new Date(data.RenewalDate);
   const ShowData = {"ID":data._id,"Book":data.BookName,"ISBN":data.ISBN,"Approved":data.Approved,"Borrow":YYYY_MM_DD.format(BorrowDate),"Renewal":YYYY_MM_DD.format(ReturnDate)};
   React.useEffect(()=>{
-    console.log(data);
+    // console.log(data);
   },[]);
   return (
     <>

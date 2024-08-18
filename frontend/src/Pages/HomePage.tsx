@@ -37,7 +37,6 @@ const Homepage: React.FC = () => {
           <div className="hidden md:flex space-x-4">
             <a href="#" className="hover:text-blue-200 text-black">Home</a>
             <a href="#" className="hover:text-blue-200 text-black">About</a>
-            <a href="#" className="hover:text-blue-200 text-black">Services</a>
             <a href="#" className="hover:text-blue-200 text-black">Contact</a>
           </div>
           <div className="space-x-2">
@@ -46,7 +45,7 @@ const Homepage: React.FC = () => {
               onClick={()=>{
                 navigate("/user-dashboard");
               }}
-            >view</button>
+            >Go-to</button>
           </div>
         </nav>
       </header>

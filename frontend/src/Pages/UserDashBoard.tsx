@@ -13,56 +13,48 @@ import BooksViewIcon from "../Components/BooksViewIcon";
 import BorrowIcon from "../Components/BorrowIcon";
 import ReturnIcon from "../Components/ReturnIcon";
 import NoDataFound from "../Components/NoDataFound";
+import ReloadIcon from "../Components/ReloadIcon";
 const UserDashBoard: React.FC = () => {
+  
   const navigate = Router.useNavigate();
   const [Image,SetImage] = React.useState<string>('./avatar.svg');
   const [UserData,SetUserData] = React.useState<z.infer<typeof UserValidator>|null>(null);
   const [BorrowData,SetBorrowData] = React.useState<z.infer<typeof BorrowResponses>|null>(null);
   const [BookData,SetBookData]  = React.useState<z.infer<typeof BookCopyModel>|null>(null);
-  React.useEffect(()=>{
-    window.onload=()=>{
-      window.location.hash="";
-    }
-    const FetchUserhData = async ()=>{
-      const data = await fetch('/api/user').then((res)=>{
-        if(res.status!=200){
-          toast.error(res.statusText,BottomToastOption);
+  const FetchUserhData = async ()=>{
+    const data = await fetch('/api/user').then((res)=>{
+      if(res.status!=200){
+        toast.error(res.statusText,BottomToastOption);
 
-          (res.status<500)?navigate("/user-auth"):(()=>{/* do nothing */});
-        }
-        return res.json();
-      });
-      try{
-        UserValidator.parse(data);
-        SetUserData(data);
-      }catch(e){
-        console.log(e);
-        // toast.error(JSON.stringify(e),BottomToastOption);
+        (res.status<500)?navigate("/user-auth"):(()=>{/* do nothing */});
       }
-      SetImage(prev=>{
-        return data?.Image??prev;
-      });
+      return res.json();
+    });
+    try{
+      UserValidator.parse(data);
+      SetUserData(data);
+    }catch(e){
+      console.log(e);
+      // toast.error(JSON.stringify(e),BottomToastOption);
     }
-    FetchUserhData();
-    const FetchBorrowData = async ()=>{
-      const data = await fetch('/api/borrow-book').then((res)=>{
-        if(res.status!=200)
-          toast.error(res.statusText,BottomToastOption);
-        return res.json();
-      });
-      try{
-        BorrowResponses.parse(data);
-        SetBorrowData(data);
-      }catch(e){
-        toast.success(JSON.stringify(e),BottomToastOption);
-      }
-    } 
-    
-    window.setTimeout(FetchBorrowData,3500);
-  
-  },[]);
-  //fetching books data
-  React.useEffect(()=>{
+    SetImage(prev=>{
+      return data?.Image??prev;
+    });
+  }
+  const FetchBorrowData = async ()=>{
+    const data = await fetch('/api/borrow-book').then((res)=>{
+      if(res.status!=200)
+        toast.error(res.statusText,BottomToastOption);
+      return res.json();
+    });
+    try{
+      BorrowResponses.parse(data);
+      SetBorrowData(data);
+    }catch(e){
+      toast.success(JSON.stringify(e),BottomToastOption);
+    }
+  }
+  const FetchBooks = async ()=>{
     fetch("api/books")
       .then((res)=>{
         if(res.status!=200)
@@ -73,11 +65,19 @@ const UserDashBoard: React.FC = () => {
         const DATA = BookCopyModel.safeParse(data);
         (DATA.success)?SetBookData(DATA.data):console.log(DATA.error.message);
       });
+  }
+  
+  React.useEffect(()=>{
+    location.hash="";
+    window.setTimeout(()=>{
+      FetchUserhData();
+      FetchBorrowData();
+      FetchBooks();
+    },0);
   },[]);
 
   React.useLayoutEffect(()=>{
     const focusHandler = (id:string)=>{
-      // console.log("load/hashchange")
       const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
       ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
     }
@@ -112,7 +112,7 @@ const UserDashBoard: React.FC = () => {
       <div className="flex flex-row">
       <aside className="flex flex-col items-center w-16 h-screen py-8 overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
         <nav className="flex flex-col flex-1 space-y-6">
-          <a href="#" className="flex justify-center">
+          <a href="/home" className="flex justify-center">
             <img
               className="w-auto h-6 "
               src="./vite.svg"
@@ -141,6 +141,21 @@ const UserDashBoard: React.FC = () => {
             <ReturnIcon/>
           </a>
 
+          <a 
+            href=""
+            className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
+            onClick={(e)=>{
+              e.preventDefault();
+              SetBorrowData(null);
+              SetBookData(null);
+              SetUserData(null);
+              FetchBooks();
+              FetchBorrowData();
+              FetchUserhData();
+            }}
+          >
+            <ReloadIcon/>
+          </a>
          
         </nav>
 
@@ -154,6 +169,7 @@ const UserDashBoard: React.FC = () => {
           </a>
         </div>
       </aside>
+
       <div id="BooksView" style={{
         width:'calc(100% - 64px)',
         animation:"opacityTransition linear 0.4s 1"
@@ -188,7 +204,10 @@ const UserDashBoard: React.FC = () => {
         width:'calc(100% - 64px)',
         animation:"opacityTransition linear 0.4s 1"
       }}>
-        {(UserData!=null)?(<Settings data={UserData}/>):(<span className="loading loading-infinity loading-lg"></span>)}
+        { (UserData!=null)?
+            (<Settings data={UserData}/>):
+            (<span className="loading loading-infinity loading-lg"></span>)
+        }
       </div>
       </div>
     </>

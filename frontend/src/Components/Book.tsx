@@ -75,7 +75,7 @@ const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
           toast.error(res.statusText,BottomToastOption);
         return res.json();
       })
-      .then(console.table)
+      .then(d=>d)
       .catch(console.error);
   }
   return (

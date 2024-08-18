@@ -177,12 +177,6 @@ const UserAuthentication: React.FC = () => {
               >
                 Password
               </label>
-              <a
-                href="#"
-                className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
-              >
-                Forget Password?
-              </a>
             </div>
 
             <input
@@ -221,7 +215,7 @@ const UserAuthentication: React.FC = () => {
               className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
               onClick={()=>{
                 const form = document.forms.namedItem(FormName);
-                form!.style.animation = "opacityTransition 1s linear 1";
+                form!.style.animation = "opacityTransition 0.25s linear 1";
                 SetRev(prev=> ((prev.flexDirection=="row")?({...prev,flexDirection:"row-reverse"}):({...prev,flexDirection:"row"})));
                 SetFormName((prev)=>((prev==="SignUp")?("LogIn"):("SignUp")));
                 window.setTimeout(()=>{
