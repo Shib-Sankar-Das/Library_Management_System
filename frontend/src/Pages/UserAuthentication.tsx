@@ -1,11 +1,12 @@
 import React from "react";
 import { z } from "zod";
+import * as Router from "react-router-dom";
 import { clientSignUpSchema } from "../Validator/ClientSignup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomToastOption from "../Options/BottomToastOption";
 const UserAuthentication: React.FC = () => {
-  
+  const navigate = Router.useNavigate();
   const [FormName,SetFormName] = React.useState<"SignUp"|"LogIn">("SignUp")
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
     Name: "",
@@ -40,8 +41,10 @@ const UserAuthentication: React.FC = () => {
       const login_data = {Email:Data.Email,Password:Data.Password};
       const URL_params = new URLSearchParams(login_data).toString();
       fetch("/api/user?"+URL_params).then((res)=>{
-        if(res.status!=200)
+        if(res.status!=200){
           toast.error(res.statusText,BottomToastOption);
+          navigate("/user-dashboard");
+        }
         return res.json();
       }).then(console.log);
     }
@@ -75,7 +78,8 @@ const UserAuthentication: React.FC = () => {
     <>
       <form name={FormName} className="flex w-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg transition-all dark:bg-gray-800 lg:max-w-4xl"
         style={{
-          flexDirection:Rev.flexDirection
+          flexDirection:Rev.flexDirection,
+          transition:"all 1s linear"
         }}
         onSubmit={(e)=>{
           e.preventDefault();
@@ -214,14 +218,15 @@ const UserAuthentication: React.FC = () => {
             <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
 
             <a
-              href="#"
               className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
               onClick={()=>{
                 const form = document.forms.namedItem(FormName);
-                form!.style.opacity = "0.5";
-                window.setTimeout(()=>{form!.style.opacity = "1"},50)
+                form!.style.animation = "opacityTransition 1s linear 1";
                 SetRev(prev=> ((prev.flexDirection=="row")?({...prev,flexDirection:"row-reverse"}):({...prev,flexDirection:"row"})));
                 SetFormName((prev)=>((prev==="SignUp")?("LogIn"):("SignUp")));
+                window.setTimeout(()=>{
+                  form!.style.removeProperty("animation");
+                },1000);
               }}
             >
               or {(FormName=="SignUp")?("LogIn"):("SignUp")}

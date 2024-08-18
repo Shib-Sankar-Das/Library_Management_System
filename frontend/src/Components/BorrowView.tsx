@@ -18,7 +18,7 @@ const BorrowView : React.FC<BorrowViewProps> = ({data,user}:BorrowViewProps) =>{
   },[]);
   return(
   <>
-  <div className="bg-[#00000000] p-2">
+  <div className="bg-[#00000000] p-2" >
       <div className="max-w-7xl mx-auto flex items-center max-h-[10dvh] ">
         <input
           type="text"
@@ -60,11 +60,17 @@ const BorrowView : React.FC<BorrowViewProps> = ({data,user}:BorrowViewProps) =>{
         </select>
       </div>
   </div>
-    {(Element.length!=0)?<div className="grid grid-cols-[repeat(auto-fill,min(90%,400px))] justify-center items-center auto-rows-[350px] gap-1 overflow-scroll max-h-[90dvh]">
-      {Element.map(item=>(<Borrow user={user} data={item} key={crypto.randomUUID()}/>))} 
-    </div>:<>
-    {"No record found"}    
-    </>}
+    {(Element.length!=0)?(
+      <div 
+        className="grid grid-cols-[repeat(auto-fill,min(90%,400px))] justify-center items-center auto-rows-[350px] gap-1 overflow-scroll max-h-[90dvh]"
+      >
+        {Element.map(item=>(<Borrow user={user} data={item} key={crypto.randomUUID()}/>))} 
+      </div>
+      ):(
+      <>
+        {"No record found"}    
+      </>
+    )}
   </>
   );
 }

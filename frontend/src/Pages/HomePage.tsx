@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import * as Router from "react-router-dom";
 
 const Homepage: React.FC = () => {
+  const navigate = Router.useNavigate();
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -39,7 +41,12 @@ const Homepage: React.FC = () => {
             <a href="#" className="hover:text-blue-200 text-black">Contact</a>
           </div>
           <div className="space-x-2">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition-colors">view</button>
+            <button 
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 transition-colors"
+              onClick={()=>{
+                navigate("/user-dashboard");
+              }}
+            >view</button>
           </div>
         </nav>
       </header>
@@ -52,7 +59,12 @@ const Homepage: React.FC = () => {
                 Manage Your Library with Ease
               </h1>
               <p className="text-xl mb-8" data-aos="fade-right" data-aos-delay="200">Streamline your library operations with our powerful management system.</p>
-              <button className="bg-white text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-100 transition-colors" data-aos="fade-up" data-aos-delay="400">Get Started</button>
+              <button 
+                className="bg-white text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-100 transition-colors" data-aos="fade-up" data-aos-delay="400"
+                onClick={()=>{
+                  navigate("/user-auth");
+                }}
+              >Get Started</button>
             </div>
             <div className="md:w-1/2 flex justify-center">
               <img src="./library.jpg" alt="Library" className="rounded-lg shadow-lg float" data-aos="fade-left" />
