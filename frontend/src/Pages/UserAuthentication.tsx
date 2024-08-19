@@ -7,46 +7,52 @@ import 'react-toastify/dist/ReactToastify.css';
 import BottomToastOption from "../Options/BottomToastOption";
 const UserAuthentication: React.FC = () => {
   const navigate = Router.useNavigate();
-  const [FormName,SetFormName] = React.useState<"SignUp"|"LogIn">("SignUp")
+  const [FormName,SetFormName] = React.useState<"SignUp"|"LogIn">("SignUp");
+  const [Rev,SetRev] = React.useState<{flexDirection:"row"|"row-reverse"}>({flexDirection:"row"});
+  const [Avatar,SetAvatar] = React.useState<File>(); 
+  const [Meaasge,SetMessage] = React.useState<string>("upload your picture under 40KB");
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
     Name: "",
     Password: "",
     Email: "",
   });
-  
-  const [Rev,SetRev] = React.useState<{flexDirection:"row"|"row-reverse"}>({flexDirection:"row"});
-  const [Avatar,SetAvatar] = React.useState<File>(); 
-  const [Meaasge,SetMessage] = React.useState<string>("upload your picture under 40KB");
-  
-  const handleSubmit = async ()=> {
-    if(FormName=="SignUp"){
-      try{
-        clientSignUpSchema.parse(Data);
-        const UPLOAD = new FormData();
-        UPLOAD.append("Name",Data.Name);
-        UPLOAD.append("Password",Data.Password);
-        UPLOAD.append("Email",Data.Email);
-        if(!Avatar) throw new Error('Avatar not selected');
-        UPLOAD.append("Avatar",Avatar as File);
-        const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then((res)=>{
-          if(res.status!=200)
-            toast.error(res.statusText,BottomToastOption);
-          return res.json();
-        });
-        toast.success(JSON.stringify(response),BottomToastOption);
-      }catch(e){
-        toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
-      }
-    }else if(FormName == "LogIn"){
-      const login_data = {Email:Data.Email,Password:Data.Password};
+  const SignUpForm = async () => {
+    try{
+      clientSignUpSchema.parse(Data);
+      const UPLOAD = new FormData();
+      UPLOAD.append("Name",Data.Name);
+      UPLOAD.append("Password",Data.Password);
+      UPLOAD.append("Email",Data.Email);
+      if(!Avatar) throw new Error('Avatar not selected');
+      UPLOAD.append("Avatar",Avatar as File);
+      const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then((res)=>{
+        if(res.status==200)
+          toast.error(res.statusText,BottomToastOption);
+        return res.json();
+      });
+      toast.success(JSON.stringify(response),BottomToastOption);
+    }catch(e){
+      toast.error((e as {message:string}).message.substring(0,47)+"...",BottomToastOption);
+    }
+  }
+  const LogInForm = async () => {
+    const login_data = {Email:Data.Email,Password:Data.Password};
       const URL_params = new URLSearchParams(login_data).toString();
       fetch("/api/user?"+URL_params).then((res)=>{
-        if(res.status!=200){
+        if(res.status==200){
           toast.error(res.statusText,BottomToastOption);
           navigate("/user-dashboard");
+        }else{
+          toast.error(res.statusText,BottomToastOption);
         }
         return res.json();
       }).then(console.log);
+  }
+  const handleSubmit = async ()=> {
+    if(FormName=="SignUp"){
+      await SignUpForm();
+    }else if(FormName == "LogIn"){
+      await LogInForm();
     }
   }
   

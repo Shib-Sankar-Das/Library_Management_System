@@ -1,19 +1,39 @@
 import React from "react";
 import  {z} from "zod";
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import BottomToastOption from "../Options/BottomToastOption";
-import {AdminLoginValidator} from "./../Validator/AdminLoginValidator";
+import BottomToastOption from "../Options/BottomToastOption";
+import * as Router from "react-router-dom";
+import {AdminLoginValidator,AdminLoginReponse} from "./../Validator/AdminLoginValidator";
 const AdminAuthentication:React.FC=()=>{
-  // console.log(z);
+  const navigate = Router.useNavigate();
   const [Data,SetData] = React.useState<z.infer<typeof AdminLoginValidator>>({
     Name:"",
     Email:"",
     Password:""
   });
 
-  const handleSubmit = async ()=> {
-    console.log(Data);
+  const handleSubmit = async () => {
+    const loginData:URLSearchParams = new URLSearchParams(Data);
+    const response:any = await fetch(`api/admin/?${loginData.toString()}`).then(res=>{
+      if(res.status==200){
+        navigate('/admin-dashboard');
+        toast.success(res.statusText,BottomToastOption);
+      }else{
+        toast.error(res.statusText,BottomToastOption);
+      }
+      try{
+        return res.json();
+      }catch(e){
+        return res.text();
+      }
+    });
+    try{
+      console.log(response);
+      AdminLoginReponse.parse(response);
+    }catch(e){
+      console.log(e);
+    }
   }
 
   return(
@@ -30,7 +50,7 @@ const AdminAuthentication:React.FC=()=>{
       className="hidden bg-cover lg:block lg:w-1/2 relative"
       style={{ backgroundImage: "url('./library.jpg')" }}
     >
-      <p className="px-1 mt-3 text-xl rounded-sm absolute text-center text-gray-600 dark:text-gray-200 bg-[#77777780] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] hover:text-black ease-linear ">
+      <p className="px-1 mt-3 text-xl rounded-sm absolute text-center text-gray-600 dark:text-gray-200 bg-[#77777780] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] hover:text-black ease-linear">
         Welcome to Library
       </p>
     </div>
@@ -109,7 +129,7 @@ const AdminAuthentication:React.FC=()=>{
 
       <div className="mt-6">
         <button
-          className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
+          className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform  rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
           type="submit"
         >
           {'login as admin'}

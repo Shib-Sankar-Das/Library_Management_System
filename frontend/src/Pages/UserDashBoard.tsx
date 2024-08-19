@@ -25,7 +25,6 @@ const UserDashBoard: React.FC = () => {
     const data = await fetch('/api/user').then((res)=>{
       if(res.status!=200){
         toast.error(res.statusText,BottomToastOption);
-
         (res.status<500)?navigate("/user-auth"):(()=>{/* do nothing */});
       }
       return res.json();
@@ -35,7 +34,7 @@ const UserDashBoard: React.FC = () => {
       SetUserData(data);
     }catch(e){
       console.log(e);
-      // toast.error(JSON.stringify(e),BottomToastOption);
+      toast.error(JSON.stringify(e),BottomToastOption);
     }
     SetImage(prev=>{
       return data?.Image??prev;

@@ -1,14 +1,38 @@
 import React from "react";
+import  {z} from "zod";
+import {AdminLoginReponse} from "./../Validator/AdminLoginValidator";
 import BooksViewIcon from "../Components/BooksViewIcon";
 import BorrowIcon from "../Components/BorrowIcon";
 import ReturnIcon from "../Components/ReturnIcon";
 import NoDataFound from "../Components/NoDataFound";
 import ReloadIcon from "../Components/ReloadIcon";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BottomToastOption from "../Options/BottomToastOption";
 const AdminDashBoard: React.FC = () => {
-  
+  const [AdminImage,SetAdminImage] = React.useState<string>('./member.jpeg');
+  const FetchAdminData = async () => {
+    const response = await fetch('api/admin/').then(res=>{
+      if(res.status==200){
+        toast.success(res.statusText,BottomToastOption);
+      }else{
+        toast.error(res.statusText,BottomToastOption);
+      }
+      return res.json();
+    });
+    AdminLoginReponse.parse(response);
+    SetAdminImage(response["Image"]);
+  }
+  React.useEffect(()=>{
+    try{
+      FetchAdminData();
+    }catch(e){
+      toast.error(JSON.stringify(e),BottomToastOption);
+    }
+  });
   return (
     <>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <div className="flex flex-row">
       <aside className="flex flex-col items-center w-16 h-screen py-8 overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
         <nav className="flex flex-col flex-1 space-y-6">
@@ -48,7 +72,7 @@ const AdminDashBoard: React.FC = () => {
           >
             <ReloadIcon/>
           </a>
-         
+        
         </nav>
 
         <div className="flex flex-col space-y-6">
@@ -56,7 +80,7 @@ const AdminDashBoard: React.FC = () => {
             <img
               className="object-cover w-8 h-8 rounded-full"
               alt="user profile image"
-              src="./member.jpeg"
+              src={AdminImage}
             />
           </a>
         </div>

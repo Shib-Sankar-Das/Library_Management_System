@@ -12,7 +12,7 @@ const AdminAvatar = async (req, res) => {
     /**
      * await import('mongoose')
      */
-    const { Avatar } = JSON.parse(JSON.stringify(await models.Models.UserModel.findOne({ _id: req.params.admin_id })));
+    const { Avatar } = JSON.parse(JSON.stringify(await models.Models.AdminModel.findOne({ _id: req.params.admin_id })));
     if(Avatar==null) throw new Error();
     res.send(Buffer.from(Avatar.data));
   }catch(e){

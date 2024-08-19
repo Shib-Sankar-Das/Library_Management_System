@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 // import mongoose from 'mongoose';
-import models from './../../models/index.js';
+import models from '../../models/index.js';
 /**
  * 
  * @param {express.Request} req 
