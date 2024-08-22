@@ -2,15 +2,13 @@ import mongoose from "mongoose";
 /**
  * @typedef BorrowObject - default value of ["Approved"] is false
  * @property {Date} [BorrowDate]
- * @property {Date} RenewalDate
+ * @property {Date} [RenewalDate]
  * @property {string} UserName
  * @property {string} BookName
  * @property {mongoose.Schema.ObjectId} UserID
  * @property {string} UserEmail
  * @property {string} ISBN
  * @property {boolean} [Approved]
- * @property {boolean} Returning
- * @property {boolean} Retaining
  * @property {mongoose.Schema.ObjectId} [BookID]
  */
 
@@ -35,11 +33,11 @@ const ISBN_Validator = (isbn) => {
 const borrowSchema = new mongoose.Schema({
   BorrowDate:{
     type:Date,
-    default:Date.now
+    default:null
   },
   RenewalDate:{
     type:Date,
-    required:true,
+    default:null,
   },
   BookID:{
     type:mongoose.Schema.ObjectId,
@@ -91,14 +89,6 @@ const borrowSchema = new mongoose.Schema({
       validator:ISBN_Validator,
       message: (props) => `${props.value} is not a valid ISBN!`
     }
-  },
-  Returning:{
-    type:Boolean,
-    default:false,
-  },
-  Retaining:{
-    type:Boolean,
-    default:true,
   },
   Approved:{
     type:Boolean,

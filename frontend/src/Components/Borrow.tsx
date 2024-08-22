@@ -7,13 +7,29 @@ interface BorrowProp {
   user: z.infer<typeof UV>;
 }
 const Borrow: React.FC<BorrowProp> = ({data,user}:BorrowProp) => {
-  const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
-  const BorrowDate = new Date(data.BorrowDate);
-  const ReturnDate = new Date(data.RenewalDate);
-  const ShowData = {"ID":data._id,"Book":data.BookName,"ISBN":data.ISBN,"Approved":data.Approved,"Borrow":YYYY_MM_DD.format(BorrowDate),"Renewal":YYYY_MM_DD.format(ReturnDate)};
-  React.useEffect(()=>{
-    // console.log(data);
-  },[]);
+  let ShowData:any = {
+    "ID":data._id,
+    "Book":data.BookName,
+    "ISBN":data.ISBN,
+    "Approved":data.Approved
+  };
+  if(data.BorrowDate!=null && data.RenewalDate!=null){
+    const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
+    const BorrowDate = new Date(data.BorrowDate);
+    const ReturnDate = new Date(data.RenewalDate);
+    ShowData = {
+      ...ShowData,
+      "Borrow":YYYY_MM_DD.format(BorrowDate),
+      "Renewal":YYYY_MM_DD.format(ReturnDate)
+    };
+  }else{
+    ShowData = {
+      ...ShowData,
+      "Borrow":"not approved yet",
+      "Renewal":"not approved yet"
+    };
+  }
+  
   return (
     <>
       <div className="overflow-x-auto bg-slate-900 rounded-md hover:scale-[90%] m-1 p-1">

@@ -13,11 +13,11 @@ const updateProfilePicture = async (request, response, next) => {
      * @type {import("express-fileupload").UploadedFile}
      */
     let profile = request.files.Avatar;
-    await model.Models.UserModel.findByIdAndUpdate(
+    await model.Models.AdminModel.findByIdAndUpdate(
       request.body._id,
       {Avatar:profile.data}
     );
-    request.body['Image'] = '/api/image/client/'+request.body['_id'];
+    request.body['Image'] = '/api/image/admin/'+request.body['_id'];
     next();
   }catch(e){
     response.status(401).send({"message":e.message});

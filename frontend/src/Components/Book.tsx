@@ -48,12 +48,7 @@ const Text = styled.p`
 `;
 const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
   const RequestHandler=()=>{
-    const plusOneMonth = (new Date());
-    plusOneMonth.setMonth(plusOneMonth.getMonth()+1);
-    const YYYY_MM_DD =  Intl.DateTimeFormat('en-CA');
     const BorrowRequest :z.infer<typeof BorrowRequestValidator> = {
-      BorrowDate:YYYY_MM_DD.format(new Date()),
-      RenewalDate:YYYY_MM_DD.format(plusOneMonth),
       ISBN:data.ISBN,
       UserID:user._id,
       UserName:user.Name,
@@ -84,7 +79,6 @@ const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
       e.preventDefault();
       (document.getElementById(data._id)! as HTMLDialogElement).showModal();
     }}>
-      {/* <ToastContainer /> */}
         <dialog id={data._id} className=" rounded-md  p-2 bg-blue-800 absolute">
           <button onClick={()=>{
             RequestHandler();
@@ -99,6 +93,8 @@ const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
           {"Publisher: "+data.Publisher}
           <br/>
           {"Subject: "+data.Subject}
+          <br/>
+          {"ISBN: "+data.ISBN}
         </Text>
       <Cover 
         style={{

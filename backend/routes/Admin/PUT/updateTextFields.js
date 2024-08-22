@@ -20,15 +20,12 @@ const updateTextFields = async (request, response, next) => {
     const {_id} = data;
     delete data._id;
     if(Object.entries(data).length){
-      if(data["Password"]){
-        // console.log('updatingPasswordInTextFields');
+      if(data["Password"])
         data["Password"] = bcrypt.hashSync(data["Password"], bcrypt.genSaltSync(8));
-      }
-      const updatedData = await model.Models.UserModel.findByIdAndUpdate(_id,data,{new:true});
+      const updatedData = await model.Models.AdminModel.findByIdAndUpdate(_id,data,{new:true});
       request.body = {"Name":updatedData.Name,"Email":updatedData.Email,"_id":_id};
-      await model.Models.BorrowModel.updateMany({UserID:request.body._id},{UserName:updatedData.Name,UserEmail:updatedData.Email});
       if(request.files?.Avatar) next();
-      else  response.status(200).json({Name:updatedData.Name,Email:updatedData.Email});
+      else  response.status(200).json({Name:updatedData.Name,Email:updatedData.Email,JoiningDate:updatedData.JoiningDate});
     }
     if(request.files?.Avatar) next();
   }catch(e){

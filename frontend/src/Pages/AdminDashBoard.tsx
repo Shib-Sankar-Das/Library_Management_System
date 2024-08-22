@@ -1,6 +1,7 @@
 import React from "react";
 import  {z} from "zod";
 import {AdminLoginReponse} from "./../Validator/AdminLoginValidator";
+import AdminSettings from "../Components/AdminSettings";
 import BooksViewIcon from "../Components/BooksViewIcon";
 import BorrowIcon from "../Components/BorrowIcon";
 import ReturnIcon from "../Components/ReturnIcon";
@@ -10,11 +11,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomToastOption from "../Options/BottomToastOption";
 const AdminDashBoard: React.FC = () => {
+  const [Admin,SetAdmin] =React.useState<z.infer<typeof AdminLoginReponse>|null>();
   const [AdminImage,SetAdminImage] = React.useState<string>('./member.jpeg');
   const FetchAdminData = async () => {
     const response = await fetch('api/admin/').then(res=>{
       if(res.status==200){
-        toast.success(res.statusText,BottomToastOption);
+        // toast.success(res.statusText,BottomToastOption);
       }else{
         toast.error(res.statusText,BottomToastOption);
       }
@@ -22,6 +24,7 @@ const AdminDashBoard: React.FC = () => {
     });
     AdminLoginReponse.parse(response);
     SetAdminImage(response["Image"]);
+    SetAdmin(response);
   }
   React.useEffect(()=>{
     try{
@@ -29,7 +32,38 @@ const AdminDashBoard: React.FC = () => {
     }catch(e){
       toast.error(JSON.stringify(e),BottomToastOption);
     }
-  });
+  },[]);
+
+  React.useLayoutEffect(()=>{
+    const focusHandler = (id:string)=>{
+      const ID_List = ['BooksView' ,'Borrow' ,'Settings'];
+      ID_List.forEach(item=>{document.getElementById(item)!.className = (id!=item)?('hidden'):('');}); 
+    }
+    const focusChanger = () => {
+      switch(location.hash){
+        case "#BooksView":
+          focusHandler('BooksView')
+          break;
+        case "#Borrow":
+          focusHandler('Borrow')
+          break;
+        case "#Settings":
+          focusHandler('Settings')
+          break;
+        default:
+          focusHandler('BooksView')
+          break;
+      }
+    }
+    window.addEventListener("load", focusChanger);
+    window.addEventListener("hashchange", focusChanger);
+    
+    return () => {
+      window.document.removeEventListener("DOMContentLoaded", focusChanger);
+      window.removeEventListener("hashchange", focusChanger);
+    };
+  },[]);
+
   return (
     <>
       <ToastContainer />
@@ -103,7 +137,11 @@ const AdminDashBoard: React.FC = () => {
         width:'calc(100% - 64px)',
         animation:"opacityTransition linear 0.4s 1"
       }}>
-        <NoDataFound/>
+        {  
+          (Admin!=null)?
+            (<AdminSettings data={Admin}/>):
+            (<span className="loading loading-infinity loading-lg" />)
+        }
       </div>
       </div>
     </>

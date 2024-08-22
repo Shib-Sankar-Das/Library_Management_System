@@ -9,11 +9,10 @@ import model from './../../../models/index.js'
 
 const invalidCookiesError = async (request, response, next) => {
   try{
-    // console.log('invalidCookiesError');
     const { _id } = JWT.decode(request.cookies._id, process.env.JWT_KEY);
     if (_id == null) throw new Error('User not logged in');
     else {
-      const doc = JSON.parse(JSON.stringify(await model.Models.UserModel.findOne({ "_id": _id })));
+      const doc = JSON.parse(JSON.stringify(await model.Models.AdminModel.findOne({ "_id": _id })));
       if (doc){
         request.body._id = doc._id;
         next();

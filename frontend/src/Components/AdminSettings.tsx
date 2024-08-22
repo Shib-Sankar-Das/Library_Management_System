@@ -1,49 +1,45 @@
 import React from "react";
 import { z } from "zod";
-import UV from "../Validator/UserValidator";
+import { clientSignUpSchema } from "../Validator/ClientSignup";
 import BottomToastOption from "../Options/BottomToastOption";
 import { toast } from "react-toastify";
-import { clientSignUpSchema } from "../Validator/ClientSignup";
+import { AdminLoginReponse } from "../Validator/AdminLoginValidator";
 interface SettingProps {
-  data: z.infer<typeof UV>;
-  // reset: ()=>void
+  data: z.infer<typeof AdminLoginReponse>;
 }
-const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
+const AdminSettings: React.FC<SettingProps> = ({ data }: SettingProps) => {
   const [Data, SetData] = React.useState<z.infer<typeof clientSignUpSchema>>({
     Email: data.Email,
     Name: data.Name,
-    Password: "",
+    Password: ""
   });
-  const [Update,SetUpdate] = React.useState<FormData>(new FormData()) 
+  const [Update, SetUpdate] = React.useState<FormData>(new FormData())
   const [Avatar, SetAvatar] = React.useState<File>();
-  const handleSubmit = async (e:React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {  
-      const response = await fetch("/api/user", {
+    try {
+      const response = await fetch("/api/admin", {
         method: "PUT",
         body: Update,
-      }).then( (res) => {
-        if (res.status == 200){
-          toast.success(JSON.stringify(res.statusText), BottomToastOption);
-          window.location.reload();
-        }
-        else
-          toast.error(JSON.stringify(res.statusText), BottomToastOption);        
-        return res.json();
-      });
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            toast.success(JSON.stringify(res.statusText), BottomToastOption);
+            window.setTimeout(() => {
+              location.reload();
+            }, 1000);
+          }
+          else
+            toast.error(JSON.stringify(res.statusText), BottomToastOption);
+          return res.json();
+        });
       console.log(response);
     } catch (e) {
-      toast.error(
-        (e as { message: string }).message.substring(0, 47) + "...",
-        BottomToastOption
-      );
+      toast.error((e as { message: string }).message.substring(0, 47) + "...",BottomToastOption);
     }
   };
-  React.useEffect(()=>{
-
-  },[]);
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
+
     const Image: HTMLImageElement = document.querySelector<HTMLImageElement>("img#avatar-update")!;
     SetAvatar((prevAvatar) => {
       try {
@@ -52,8 +48,8 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
           (e.target.files as FileList)[0].size <= 40 * 1024
         ) {
           Image.src = URL.createObjectURL(e.target.files![0]);
-          SetUpdate(prevUpdate=>{
-            prevUpdate.set("Avatar",e.target.files![0]);
+          SetUpdate(prevUpdate => {
+            prevUpdate.set("Avatar", e.target.files![0]);
             return prevUpdate;
           });
           return e.target.files[0];
@@ -64,7 +60,7 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
       } catch (e) {
         Image.src = "./invalid.svg";
         toast.error("please select a file", BottomToastOption);
-        SetUpdate(prevUpdate=>{
+        SetUpdate(prevUpdate => {
           prevUpdate.delete("Avatar");
           return prevUpdate;
         });
@@ -110,8 +106,8 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
               placeholder="Username"
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
-                  SetUpdate(prevUpdate=>{
-                    prevUpdate.set("Name",e.target?.value || "" );
+                  SetUpdate(prevUpdate => {
+                    prevUpdate.set("Name", e.target?.value || "");
                     return prevUpdate;
                   });
                   return { ...prev, Name: e.target?.value || "" };
@@ -134,13 +130,30 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
               placeholder="Email"
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
-                  SetUpdate(prevUpdate=>{
-                    prevUpdate.set("Email",e.target?.value || "" );
+                  SetUpdate(prevUpdate => {
+                    prevUpdate.set("Email", e.target?.value || "");
                     return prevUpdate;
                   });
                   return { ...prev, Email: e.target?.value || "" };
                 });
               }}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-left mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+              htmlFor="joining-date"
+            >
+              Joining date
+            </label>
+            <input
+              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+              id="joining-date"
+              type="date"
+              defaultValue={
+                (new Intl.DateTimeFormat('en-CA')).format(new Date(data.JoiningDate))
+              }
+              disabled={true}
             />
           </div>
           <div className="mb-6">
@@ -158,8 +171,8 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
               placeholder="********"
               onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                 SetData((prev) => {
-                  SetUpdate(prevUpdate=>{
-                    prevUpdate.set("Password",e.target?.value || "" );
+                  SetUpdate(prevUpdate => {
+                    prevUpdate.set("Password", e.target?.value || "");
                     return prevUpdate;
                   });
                   return { ...prev, Password: e.target?.value || "" };
@@ -176,14 +189,14 @@ const Settings: React.FC<SettingProps> = ({ data }: SettingProps) => {
           <div className="flex items-center justify-center">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit" 
-              children = {"SAVE"}
+              type="submit"
+              children={"SAVE"}
             />
           </div>
         </div>
       </div>
-      
+
     </form>
   );
 };
-export default Settings;
+export default AdminSettings;
