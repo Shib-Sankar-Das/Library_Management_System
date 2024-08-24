@@ -15,7 +15,7 @@ const endPoint = async (request, response) => {
   response.json(Data.map((item) => {
     delete item.CoverPage;
     delete item.__v
-    item.ImageLink = `http://localhost:4000/api/image/book/${item._id}`;
+    item.ImageLink = `http://localhost:4000/api/image/book/${item._id}.jpeg`;
     return item;
   }));
 

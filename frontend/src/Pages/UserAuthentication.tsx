@@ -27,7 +27,10 @@ const UserAuthentication: React.FC = () => {
       UPLOAD.append("Avatar",Avatar as File);
       const response = await fetch('/api/user',{method:'POST',body:UPLOAD}).then((res)=>{
         if(res.status==200)
+          toast.success(res.statusText,BottomToastOption);
+        else
           toast.error(res.statusText,BottomToastOption);
+
         return res.json();
       });
       toast.success(JSON.stringify(response),BottomToastOption);
@@ -91,6 +94,8 @@ const UserAuthentication: React.FC = () => {
           e.preventDefault();
           handleSubmit();
         }}
+        
+        
       >
         <ToastContainer />
         <div
@@ -122,7 +127,7 @@ const UserAuthentication: React.FC = () => {
             </label>
             <input
               id="UserAvatar"
-              className="hidden w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+              className="hidden w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 invalid:text-red-600"
               type="file"
               onInput={handleAvatarChange}
               required = {(FormName==="SignUp")}

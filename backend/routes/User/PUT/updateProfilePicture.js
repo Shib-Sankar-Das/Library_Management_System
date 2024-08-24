@@ -17,7 +17,7 @@ const updateProfilePicture = async (request, response, next) => {
       request.body._id,
       {Avatar:profile.data}
     );
-    request.body['Image'] = '/api/image/client/'+request.body['_id'];
+    request.body['Image'] = '/api/image/client/'+request.body['_id']+".jpeg";
     next();
   }catch(e){
     response.status(401).send({"message":e.message});

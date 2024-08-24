@@ -15,7 +15,7 @@ const userNotFoundError = async (request,response,next) => {
       delete doc["Avatar"];
       delete doc['__v'];
       delete doc['Password'];
-      doc['Image'] = '/api/image/client/'+doc['_id'];
+      doc['Image'] = '/api/image/client/'+doc['_id']+'.jpeg';
       request.query = doc;
       next();
     }

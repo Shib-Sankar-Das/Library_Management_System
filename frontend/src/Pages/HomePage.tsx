@@ -59,7 +59,7 @@ const Homepage: React.FC = () => {
               </h1>
               <p className="text-xl mb-8" data-aos="fade-right" data-aos-delay="200">Streamline your library operations with our powerful management system.</p>
               <button 
-                className="bg-white text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-100 transition-colors" data-aos="fade-up" data-aos-delay="400"
+                className="bg-gray-400 text-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-100 transition-colors" data-aos="fade-up" data-aos-delay="400"
                 onClick={()=>{
                   navigate("/user-auth");
                 }}
@@ -75,17 +75,17 @@ const Homepage: React.FC = () => {
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-center mb-12" data-aos="fade-up">Our Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+              <div className="bg-gray-400 p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
                 <img src="./catalog.png" alt="Feature 1" className="w-full h-48 object-contain rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-900">Catalog Management</h3>
                 <p className='text-gray-900'>Easily manage and organize your entire book collection.</p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
-                <img src="./member.jpeg" alt="Feature 2" className="w-full h-48 object-contain rounded-lg mb-4" />
+              <div className="bg-gray-400 p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="400">
+                <img src="./member.png" alt="Feature 2" className="w-full h-48 object-contain rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-900">Member Management</h3>
                 <p className='text-gray-900'>Keep track of library members and their borrowing history.</p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="600">
+              <div className="bg-gray-400 p-6 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="600">
                 <img src="./digital-resources.png" alt="Feature 3" className="w-full h-48 object-contain rounded-lg mb-4" />
                 <h3 className="text-xl font-semibold mb-2 text-gray-900">Digital Resources</h3>
                 <p className='text-gray-900'>Integrate and manage e-books and digital content seamlessly.</p>
@@ -98,11 +98,11 @@ const Homepage: React.FC = () => {
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-center mb-12" data-aos="fade-up">What Our Users Say</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-left">
+              <div className="bg-gray-400 p-6 rounded-lg shadow-md text-blue-500" data-aos="fade-left">
                 <p className="mb-4 text-black">"This library management system has revolutionized our workflow. It's user-friendly and efficient!"</p>
                 <p className="font-semibold">- Sarah Johnson, Librarian</p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md" data-aos="fade-right">
+              <div className="bg-gray-400 p-6 rounded-lg shadow-md text-blue-500" data-aos="fade-right">
                 <p className="mb-4 text-black">"I love how easy it is to find and borrow books using this system. It's made my library experience so much better!"</p>
                 <p className="font-semibold">- Michael Chen, Library Member</p>
               </div>
