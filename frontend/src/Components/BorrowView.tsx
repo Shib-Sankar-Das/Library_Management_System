@@ -37,7 +37,7 @@ const BorrowView : React.FC<BorrowViewProps> = ({data,user}:BorrowViewProps) =>{
                     case "ID":
                       return  item._id.toLowerCase().includes(Search);
                     case "Date":
-                      return  item.RenewalDate.toLowerCase().includes(Search)||item.BorrowDate.toLowerCase().includes(Search);
+                      return  item.RenewalDate!.toLowerCase().includes(Search)||item.BorrowDate!.toLowerCase().includes(Search);
                     case "ISBN":
                       return  item.ISBN.toLowerCase().includes(Search);
                     default :

@@ -10,14 +10,40 @@ const endPoint = async (request, response) => {
   /**
    * @type {import('../../../models/Book.js').BookCopyObject[]}
   */
-  let Data = await models.Models.BookCopyModel.find({});
+  let Data = await models.Models.BookCopyModel.aggregate([
+    {
+      $project: {
+        CoverPage: 0,
+        __v: 0
+      }
+    },
+    {
+      $addFields: {
+        idString: {
+          $toString: "$_id"
+        }
+      }
+    },
+    {
+      $addFields: {
+        ImageLink: {
+          $concat: [
+            "http://localhost:4000/api/image/book/",
+            "$idString",
+            ".jpeg"
+          ]
+        }
+      }
+    },
+    {
+      $project: {
+        "idString": 0
+      }
+    }
+  ]);
   Data = JSON.parse(JSON.stringify(Data));
-  response.json(Data.map((item) => {
-    delete item.CoverPage;
-    delete item.__v
-    item.ImageLink = `http://localhost:4000/api/image/book/${item._id}.jpeg`;
-    return item;
-  }));
+  console.log(Data);
+  response.json(Data);
 
 }
 export default endPoint;

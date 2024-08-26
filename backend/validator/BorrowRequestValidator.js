@@ -24,7 +24,7 @@ const ISBN_Validator = (isbn) => {
  * @property {z.ZodString} ISBN
  */
 
-const BorrowRequestValidator= z.object({
+const BorrowRequestValidator= z.strictObject({
   UserName:z.string({required_error:'User name is required'}).min(4,'too short name').max(50,'too long name'),
   UserEmail:z.string({required_error:"Email field is required"}).email("not a valid email"),
   UserID:z.string({required_error:'UserID required'}).length(24),

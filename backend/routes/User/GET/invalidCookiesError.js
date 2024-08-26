@@ -24,7 +24,7 @@ const invalidCookiesError = async (request,response,next) => {
           delete doc.__v;
           delete doc.Avatar;
           delete doc.Password;
-          doc['Image'] = '/api/image/client/'+doc['_id'];
+          doc['Image'] = 'http://localhost:4000/api/image/client/'+doc['_id']+'.jpeg';
           response.send(doc);
         }
         else {

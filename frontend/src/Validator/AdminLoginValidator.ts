@@ -8,5 +8,5 @@ export const AdminLoginReponse = z.object({
   Name:z.string({required_error:"name field is required"}).min(4,"minimum mame length should be 4"),
   Email:z.string({required_error:"email field is required"}).email("not a valid email"),
   JoiningDate:z.string({required_error:"joining date not found"}).datetime('not a valid datetime'),
-  Image:z.string({required_error:"image url is required"})
+  Image:z.string({required_error:"image url is required"}).url()
 })

@@ -1,18 +1,21 @@
 import React from "react";
 import  {z} from "zod";
 import {AdminLoginReponse} from "./../Validator/AdminLoginValidator";
+import { BorrowDetailsArray } from "../Validator/BorrowDetailsValidator";
 import AdminSettings from "../Components/AdminSettings";
 import BooksViewIcon from "../Components/BooksViewIcon";
 import BorrowIcon from "../Components/BorrowIcon";
 import ReturnIcon from "../Components/ReturnIcon";
 import NoDataFound from "../Components/NoDataFound";
 import ReloadIcon from "../Components/ReloadIcon";
+import BorrowApproval from "../Components/BorrowApproval";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomToastOption from "../Options/BottomToastOption";
 const AdminDashBoard: React.FC = () => {
   const [Admin,SetAdmin] =React.useState<z.infer<typeof AdminLoginReponse>|null>();
   const [AdminImage,SetAdminImage] = React.useState<string>('./member.jpeg');
+  const [Borrow,SetBorrow] = React.useState<z.infer<typeof BorrowDetailsArray>|null>(null);
   const FetchAdminData = async () => {
     const response = await fetch('api/admin/').then(res=>{
       if(res.status==200){
@@ -26,9 +29,28 @@ const AdminDashBoard: React.FC = () => {
     SetAdminImage(response["Image"]);
     SetAdmin(response);
   }
+  const FetchBorrowModelData = async () => {
+    const response = await fetch('/api/borrow-book/admin').then(res=>{
+      if(res.status==200){
+        // toast.success(res.statusText,BottomToastOption);
+      }else{
+        toast.error(res.statusText,BottomToastOption);
+      }
+      return res.json();
+    });
+    try{
+      BorrowDetailsArray.parse(response);
+      SetBorrow(response);
+    }catch(e){
+      console.log(e);
+      toast.error('parsing error',BottomToastOption);
+    }
+    
+  }
   React.useEffect(()=>{
     try{
       FetchAdminData();
+      FetchBorrowModelData();
     }catch(e){
       toast.error(JSON.stringify(e),BottomToastOption);
     }
@@ -120,12 +142,20 @@ const AdminDashBoard: React.FC = () => {
         </div>
       </aside>
 
-      <div id="BooksView" style={{
+      <div id="BooksView" className="p-2" style={{
         width:'calc(100% - 64px)',
         animation:"opacityTransition linear 0.4s 1"
       }}
       >
-        <NoDataFound/>
+        {
+          (Borrow!=null)?
+            (
+              (Borrow.length)?
+                (<BorrowApproval data={Borrow}/>):
+                (<NoDataFound/>)
+            ):
+            (<span className="loading loading-infinity loading-lg" />)
+        }
       </div>
       <div id="Borrow" className="hidden" style={{
         width:'calc(100% - 64px)',

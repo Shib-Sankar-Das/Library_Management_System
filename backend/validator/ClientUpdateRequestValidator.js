@@ -1,5 +1,5 @@
 import { z } from "zod";
-const ClientUpdate = z.object({
+const ClientUpdate = z.strictObject({
   _id:z.string().length(24),
   Name:z.string().optional(),
   Email:z.string().email("not a valid email").optional(),

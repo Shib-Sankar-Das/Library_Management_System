@@ -8,14 +8,15 @@ import model from './../../../models/index.js'
  */
 const userNotFoundError = async (request,response,next) => {
   try{
-    let doc = JSON.parse(JSON.stringify(await model.Models.UserModel.findOne({Email:request.query.Email})));
+    let doc = await model.Models.UserModel.findOne({Email:request.query.Email}).select(['Name','Email','Password']);
+    console.log(doc);
+    doc = JSON.parse(JSON.stringify(doc));
+    console.log(doc);
     if(!doc) throw new Error("User not found");
     else if(!bcrypt.compareSync(request.query.Password,doc.Password)) throw new Error("Wrong Email or Password");
     else {
-      delete doc["Avatar"];
-      delete doc['__v'];
       delete doc['Password'];
-      doc['Image'] = '/api/image/client/'+doc['_id']+'.jpeg';
+      doc['Image'] = 'http://localhost:4000/api/image/client/'+doc['_id']+'.jpeg';
       request.query = doc;
       next();
     }

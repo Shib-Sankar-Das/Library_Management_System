@@ -1,9 +1,19 @@
 import React from "react";
+import { z } from "zod";
+import { BorrowDetailsArray } from "../Validator/BorrowDetailsValidator";
+import BorrowAdminViewer from "./BorrowAdminViewer"
+// const 
 interface props {
-  data:Object
+  data: z.infer<typeof BorrowDetailsArray>
 }
-const BorrowApproval:React.FC<props> = ({data}) => {
+const BorrowApproval: React.FC<props> = ({ data }) => {
   console.log(data);
-  return (<></>);
+  return (
+    <>
+    {
+      data.map((item) => <BorrowAdminViewer data={item} key={crypto.randomUUID()}/>)
+    }
+    </>
+  );
 }
 export default BorrowApproval;
