@@ -9,11 +9,11 @@ import BottomToastOption from "../Options/BottomToastOption";
 import { BorrowResponses } from "../Validator/BorrowResponseValidator";
 import Settings from "../Components/Settings";
 import BorrowView from "../Components/BorrowView";
-import BooksViewIcon from "../Components/BooksViewIcon";
-import BorrowIcon from "../Components/BorrowIcon";
-import ReturnIcon from "../Components/ReturnIcon";
+import BooksViewIcon from "../Components/Icon/BooksViewIcon";
+import BorrowIcon from "../Components/Icon/BorrowIcon";
+import ReturnIcon from "../Components/Icon/ReturnIcon";
 import NoDataFound from "../Components/NoDataFound";
-import ReloadIcon from "../Components/ReloadIcon";
+import ReloadIcon from "../Components/Icon/ReloadIcon";
 const UserDashBoard: React.FC = () => {
 
   const navigate = Router.useNavigate();

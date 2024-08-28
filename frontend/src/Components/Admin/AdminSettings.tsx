@@ -1,9 +1,9 @@
 import React from "react";
 import { z } from "zod";
-import { clientSignUpSchema } from "../Validator/ClientSignup";
-import BottomToastOption from "../Options/BottomToastOption";
+import { clientSignUpSchema } from "../../Validator/ClientSignup";
+import BottomToastOption from "../../Options/BottomToastOption";
 import { toast } from "react-toastify";
-import { AdminLoginReponse } from "../Validator/AdminLoginValidator";
+import { AdminLoginReponse } from "../../Validator/AdminLoginValidator";
 interface SettingProps {
   data: z.infer<typeof AdminLoginReponse>;
 }

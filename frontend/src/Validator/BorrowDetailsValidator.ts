@@ -1,21 +1,31 @@
 import { z } from 'zod';
-export const BorrowDetailsObject = z.strictObject({
+const ISBN_Validator = (isbn:string):boolean => {
+  let x =  parseInt(isbn)
+  if (isbn.length==10 && (!Number.isNaN(x))) 
+    return true;
+  else if (isbn.length==13 && (!Number.isNaN(x))) 
+    return true;
+  else 
+    return false;
+}
+export const BorrowRequest = z.strictObject({
   _id: z.string().length(24),
-  BorrowDate:z.union([z.string().datetime(),z.null()]),
-  RenewalDate:z.union([z.string().datetime(),z.null()]),
-  UserID: z.string().length(24),
-  UserName: z.string(),
-  UserEmail: z.string().email('not a valid email'),
-  UserImage: z.string().url(),
-  BookID: z.union([z.string().length(24),z.null()]),
-  BookName: z.string(),
-  Approved:z.boolean(),
-  ISBN: z.string(),
-  BookImage:z.string().url(),
+  BorrowDate: z.union([z.string().datetime(), z.null()]),
+  RenewalDate: z.union([z.string().datetime(), z.null()]),
+  BookID: z.union([z.string().length(24), z.null()]),
+  BookName: z.string({required_error:'Book name is required'}).min(4),
+  ISBN:z.string({required_error:'ISBN required'}).min(10).max(13).refine(ISBN_Validator,{message:'not a valid ISBN'}),
+  Approved: z.boolean(),
+  BookImage: z.string().url(),
 });
-export const BorrowDetailsModel = z.array(BorrowDetailsObject);
+export const BorrowRequestArray = z.array(BorrowRequest);
 export const BorrowDetails = z.strictObject({
-  UserImage:z.string().url(),
-  Data:BorrowDetailsModel
+  User: z.strictObject({
+    _id: z.string().length(24),
+    Name: z.string({required_error:'User name is required'}).min(4,'min length should be 4').max(50,'max length is 50'),
+    Email: z.string({required_error:"Email field is required"}).email("not a valid email"),
+    Avatar: z.string().url(),
+  }),
+  BorrowRequests: BorrowRequestArray
 });
 export const BorrowDetailsArray = z.array(BorrowDetails);

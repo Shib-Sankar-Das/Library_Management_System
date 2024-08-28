@@ -1,8 +1,8 @@
 import React from "react";
 import { z } from "zod";
-import { BorrowDetailsObject } from "../Validator/BorrowDetailsValidator";
+import { BorrowRequest } from "../../Validator/BorrowDetailsValidator";
 interface props {
-  data: z.infer<typeof BorrowDetailsObject>
+  data: z.infer<typeof BorrowRequest>
 }
 const BorrowAdminTable: React.FC<props> = ({ data }) => {
   const x = Object.entries(data);

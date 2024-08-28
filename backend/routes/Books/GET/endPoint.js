@@ -42,7 +42,7 @@ const endPoint = async (request, response) => {
     }
   ]);
   Data = JSON.parse(JSON.stringify(Data));
-  console.log(Data);
+  // console.log(Data);
   response.json(Data);
 
 }
