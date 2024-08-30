@@ -1,11 +1,11 @@
 import React from "react";
 import { z } from "zod";
-import { bookCopySchema } from "../Validator/BookCopy";
+import { bookCopySchema } from "../../Validator/BookCopy";
 import styled from 'styled-components';
-import UV from "../Validator/UserValidator";
-import BorrowRequestValidator from "../Validator/BorrowRequestObject";
+import UV from "../../Validator/UserValidator";
+import BorrowRequestValidator from "../../Validator/BorrowRequestObject";
 import { toast } from 'react-toastify';
-import BottomToastOption from "../Options/BottomToastOption";
+import BottomToastOption from "../../Options/BottomToastOption";
 type props = z.infer<typeof bookCopySchema>;
 const BookContainer = styled.div`
   position: relative;
@@ -46,47 +46,12 @@ const Text = styled.p`
   font-size: 20px;
   font-weight: bolder;
 `;
-const Book: React.FC<{data:props,user:z.infer<typeof UV>}> = ({data,user}) => {
-  const RequestHandler=()=>{
-    const BorrowRequest :z.infer<typeof BorrowRequestValidator> = {
-      ISBN:data.ISBN,
-      UserID:user._id,
-      UserName:user.Name,
-      UserEmail:user.Email,
-      BookName:data.Name,
-    };
-    fetch('/api/borrow-book',
-      { 
-        method:"post",
-        body:JSON.stringify(BorrowRequest),
-        headers:{
-          "Content-Type": "application/json"
-        }
-      })
-      .then((res)=>{
-        if(res.status==200)
-          toast.success(res.statusText,BottomToastOption);
-        else
-          toast.error(res.statusText,BottomToastOption);
-        return res.json();
-      })
-      .then(d=>d)
-      .catch(console.error);
-  }
+const Book: React.FC<{data:props}> = ({data}) => {
+  
   return (
     <>
-    <BookContainer onContextMenu={(e)=>{
-      e.preventDefault();
-      (document.getElementById(data._id)! as HTMLDialogElement).showModal();
-    }}>
-        <dialog id={data._id} className=" rounded-md  p-2 bg-blue-800 absolute">
-          <button onClick={()=>{
-            RequestHandler();
-            (document.getElementById(data._id)! as HTMLDialogElement).close();
-          }} className="btn bg-blue-700 rounded-md">
-          {"Borrow "+data.Name.slice(0,20)+'...'}
-          </button> 
-        </dialog>
+    <BookContainer>
+        
         <Text style={{textAlign:'left',paddingLeft:"5px", fontSize:'16px'}}>
           {"Author: "+data.Author}
           {<br/>}

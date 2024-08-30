@@ -11,7 +11,7 @@ const userNotFoundError = async (request,response,next) => {
     let doc = await model.Models.UserModel.findOne({Email:request.query.Email}).select(['Name','Email','Password']);
     console.log(doc);
     doc = JSON.parse(JSON.stringify(doc));
-    console.log(doc);
+    // console.log(doc);
     if(!doc) throw new Error("User not found");
     else if(!bcrypt.compareSync(request.query.Password,doc.Password)) throw new Error("Wrong Email or Password");
     else {

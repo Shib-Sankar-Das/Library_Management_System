@@ -1,7 +1,7 @@
 import React from "react";
 import { z } from "zod";
-import { BorrowResponseValidator } from "../Validator/BorrowResponseValidator";
-import UV from "../Validator/UserValidator";
+import { BorrowResponseValidator } from "../../Validator/BorrowResponseValidator";
+import UV from "../../Validator/UserValidator";
 interface BorrowProp {
   data: z.infer<typeof BorrowResponseValidator>;
   user: z.infer<typeof UV>;

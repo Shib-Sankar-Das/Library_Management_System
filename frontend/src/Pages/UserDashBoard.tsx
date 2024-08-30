@@ -1,14 +1,14 @@
 import React from "react";
 import { z } from "zod";
 import * as Router from "react-router-dom";
-import BooksView from "../Components/BooksView";
+import BooksView from "../Components/User/BooksView";
 import { BookCopyModel } from "../Validator/BookCopy";
 import UserValidator from "../Validator/UserValidator";
 import { ToastContainer, toast } from 'react-toastify';
 import BottomToastOption from "../Options/BottomToastOption";
 import { BorrowResponses } from "../Validator/BorrowResponseValidator";
-import Settings from "../Components/Settings";
-import BorrowView from "../Components/BorrowView";
+import Settings from "../Components/User/Settings";
+import BorrowView from "../Components/User/BorrowView";
 import BooksViewIcon from "../Components/Icon/BooksViewIcon";
 import BorrowIcon from "../Components/Icon/BorrowIcon";
 import ReturnIcon from "../Components/Icon/ReturnIcon";

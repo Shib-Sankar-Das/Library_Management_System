@@ -3,7 +3,7 @@ import { z } from "zod";
 import { AdminLoginReponse } from "./../Validator/AdminLoginValidator";
 import { BorrowDetailsArray } from "../Validator/BorrowDetailsValidator";
 import AdminSettings from "../Components/Admin/AdminSettings";
-// import BooksViewIcon from "../Components/BooksViewIcon";
+import BooksViewIcon from "../Components/Icon/BooksViewIcon";
 import UserIcon from "../Components/Icon/UserIcon";
 import BorrowIcon from "../Components/Icon/BorrowIcon";
 import ReturnIcon from "../Components/Icon/ReturnIcon";
@@ -59,13 +59,18 @@ const AdminDashBoard: React.FC = () => {
 
   React.useLayoutEffect(() => {
     const focusHandler = (id: string) => {
-      const ID_List = ['BooksView', 'Borrow', 'Settings'];
-      ID_List.forEach(item => { document.getElementById(item)!.className = (id != item) ? ('hidden') : (''); });
+      const ID_List = ['UserView', 'Borrow', 'Settings'];
+      ID_List.forEach(item => { 
+        (document.getElementById(item))!.className = (id != item) ? ('hidden') : (''); 
+      });
     }
     const focusChanger = () => {
       switch (location.hash) {
         case "#BooksView":
           focusHandler('BooksView')
+          break;
+        case "#UserView":
+          focusHandler('UserView')
           break;
         case "#Borrow":
           focusHandler('Borrow')
@@ -74,7 +79,7 @@ const AdminDashBoard: React.FC = () => {
           focusHandler('Settings')
           break;
         default:
-          focusHandler('BooksView')
+          focusHandler('UserView')
           break;
       }
     }
@@ -102,10 +107,17 @@ const AdminDashBoard: React.FC = () => {
             </a>
 
             <a
-              href="#BooksView"
+              href="#UserView"
               className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
             >
               <UserIcon />
+            </a>
+            
+            <a
+              href="#"
+              className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
+            >
+              <BooksViewIcon />
             </a>
 
             <a
@@ -143,14 +155,10 @@ const AdminDashBoard: React.FC = () => {
           </div>
         </aside>
 
-        <div id="BooksView"
+        <div id="UserView" className=""
           style={{
-            animation:'opacityTransition linear 0.4s 1',
             width:'calc(100% - 64px)',
-            display:'grid',
-            gridTemplateColumns:'repeat(auto-fill,20rem)',
-            gap:'0.75rem',
-            gridAutoRows:'320px'
+            animation:'opacityTransition linear 0.4s 1'
           }}
         >
           {

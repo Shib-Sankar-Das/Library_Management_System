@@ -1,7 +1,8 @@
 import React from "react";
 import { z } from "zod";
-import { BookCopyModel } from "../Validator/BookCopy";
-import UV from "../Validator/UserValidator";
+import { BookCopyModel } from "../../Validator/BookCopy";
+import UV from "../../Validator/UserValidator";
+import NoDataFound from "../NoDataFound";
 import Book from "./Book";
 interface BooksViewProps {
   data:z.infer<typeof BookCopyModel>,
@@ -63,9 +64,9 @@ const BooksView : React.FC<BooksViewProps> = ({data,user}:BooksViewProps) =>{
         </select>
       </div>
     </div>
-    {(Element.length!=0)?<div className="grid grid-flow-row grid-cols-[repeat(auto-fill,300px)] auto-rows-[280px] min-w-full m-0 p-2 justify-center align-middle place-items-center gap-1.5 overflow-y-auto max-h-[90dvh]">
+    {(Element.length!=0)?(<div className="grid grid-flow-row grid-cols-[repeat(auto-fill,300px)] auto-rows-[280px] min-w-full m-0 p-2 justify-center align-middle place-items-center gap-1.5 overflow-y-auto max-h-[90dvh]">
       {Element.map((item) => (<Book key={item._id} data={item} user={user} />))}
-    </div>:<>{"Nothing found"}</>}
+    </div>):(<NoDataFound/>)}
     </>
   );
 }

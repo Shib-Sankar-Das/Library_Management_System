@@ -46,7 +46,7 @@ const UserAuthentication: React.FC = () => {
     const URL_params = new URLSearchParams(login_data).toString();
     fetch("/api/user?" + URL_params).then((res) => {
       if (res.status == 200) {
-        toast.error(res.statusText, BottomToastOption);
+        toast.success(res.statusText, BottomToastOption);
         window.setTimeout(() => { navigate("/user-dashboard"); }, 1000);
       } else {
         toast.error(res.statusText, BottomToastOption);

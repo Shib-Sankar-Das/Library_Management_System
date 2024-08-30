@@ -1,9 +1,9 @@
 import React from "react";
 import { z } from "zod";
-import UV from "../Validator/UserValidator";
-import BottomToastOption from "../Options/BottomToastOption";
+import UV from "../../Validator/UserValidator";
+import BottomToastOption from "../../Options/BottomToastOption";
 import { toast } from "react-toastify";
-import { clientSignUpSchema } from "../Validator/ClientSignup";
+import { clientSignUpSchema } from "../../Validator/ClientSignup";
 interface SettingProps {
   data: z.infer<typeof UV>;
   // reset: ()=>void

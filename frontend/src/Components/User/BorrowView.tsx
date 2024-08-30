@@ -1,8 +1,9 @@
 import React from "react";
 import { z } from "zod";
-import {BorrowResponses} from "../Validator/BorrowResponseValidator";
-import UV from "../Validator/UserValidator";
+import {BorrowResponses} from "../../Validator/BorrowResponseValidator";
+import UV from "../../Validator/UserValidator";
 import Borrow from "./Borrow";
+import NoDataFound from "../NoDataFound";
 interface BorrowViewProps{
   data:z.infer<typeof BorrowResponses>,
   user:z.infer<typeof UV>
@@ -66,10 +67,7 @@ const BorrowView : React.FC<BorrowViewProps> = ({data,user}:BorrowViewProps) =>{
       >
         {Element.map(item=>(<Borrow user={user} data={item} key={crypto.randomUUID()}/>))} 
       </div>
-      ):(
-      <>
-        {"No record found"}    
-      </>
+      ):(<NoDataFound/>
     )}
   </>
   );
