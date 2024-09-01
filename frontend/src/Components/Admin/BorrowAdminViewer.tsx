@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { BorrowDetails } from "../../Validator/BorrowDetailsValidator";
 import ArrowLinkIcon from "../Icon/ArrowLinkIcon";
@@ -6,6 +7,7 @@ interface props {
   data: z.infer<typeof BorrowDetails>
 }
 const BorrowAdminViewer: React.FC<props> = ({ data }) => {
+  const navigate = useNavigate();
   return (
     <div className=" bg-blue-950 card w-80 shadow-xl m-2 hover:scale-[0.8]">
       <div className="avatar items-center justify-center">
@@ -17,7 +19,13 @@ const BorrowAdminViewer: React.FC<props> = ({ data }) => {
         <h2 className="card-title">{data.User.Name}</h2>
         <p className="text-ellipsis overflow-hidden w-[100%]">{data.User.Email}</p>
         <div className="card-actions">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" 
+            onClick={()=>{
+              navigate('/admin-user-preview',{
+                state:JSON.parse(JSON.stringify(data))
+              })
+            }}
+          >
             <ArrowLinkIcon/>
           </button>
         </div>

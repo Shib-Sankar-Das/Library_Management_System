@@ -1,3 +1,7 @@
+---
+marp: false
+---
+
 # Library_Management_System
 
 ## Backend

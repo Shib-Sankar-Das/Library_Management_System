@@ -6,6 +6,7 @@ import HomePage from "./Pages/HomePage";
 import UserDashBoard from "./Pages/UserDashBoard";
 import AdminAuthentication from "./Pages/AdminAuthentication";
 import AdminDashBoard from "./Pages/AdminDashBoard";
+import AdminUserPreview from "./Pages/AdminUserPreview";
 const App: React.FC = () => {
     return (
       <Routes>
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/user-dashboard" element={<UserDashBoard />} />
         <Route path="/admin-auth" element={<AdminAuthentication />} />
         <Route path="/admin-dashboard" element={<AdminDashBoard/>} />
+        <Route path="/admin-user-preview" element={<AdminUserPreview/>} />
       </Routes>
     );
 };

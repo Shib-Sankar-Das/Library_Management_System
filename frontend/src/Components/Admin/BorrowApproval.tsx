@@ -44,7 +44,7 @@ const BorrowApproval: React.FC<props> = ({ data }) => {
                     }
                   });
                   return filtered;
-                })
+                });
               }
             }}
             className="w-full p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -60,11 +60,9 @@ const BorrowApproval: React.FC<props> = ({ data }) => {
       </div>
         {
           (Element.length)?
-            (
-            <div className="grid grid-cols-[repeat(auto-fill,min(90%,400px))] justify-center items-center auto-rows-[350px] gap-1 overflow-scroll max-h-[90dvh]">
+            (<div className="grid grid-cols-[repeat(auto-fill,min(90%,400px))] justify-center items-center auto-rows-[350px] gap-1 overflow-scroll max-h-[90dvh]">
               {(Element.map((item) => <BorrowAdminViewer data={item} key={crypto.randomUUID()}/>))}
-            </div>
-            ):
+            </div>):
             (<NoDataFound/>)
         }
     </>
