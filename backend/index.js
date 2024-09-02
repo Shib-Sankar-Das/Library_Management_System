@@ -12,11 +12,11 @@ const __dirname = path.dirname(__filename);
 try {
   console.clear();
   dotenv.config();
-  
+
   await connect(process.env.DATABASE_URL);
-  
+
   const APP = express();
-  
+
   APP.use(express.json());
   APP.use(cookieParser());
   APP.use(express.urlencoded({ extended: true }));
@@ -25,9 +25,9 @@ try {
     limits: {
       fileSize: 40 * 1024
     },
-    abortOnLimit:true
+    abortOnLimit: true
   }));
-  APP.use('/',routes);
+  APP.use('/', routes);
 
   APP.listen(process.env.PORT, () => {
     console.log(`http://localhost:${process.env.PORT}`);

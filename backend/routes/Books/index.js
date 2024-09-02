@@ -3,5 +3,5 @@ import getEndPoint from "./GET/endPoint.js";
 import AdminRouter from "./AdminRouter/index.js";
 const BookRouter = express.Router();
 BookRouter.get('/books',getEndPoint);
-// BookRouter.use('/books/admin',AdminRouter);
+BookRouter.use('/books',AdminRouter);
 export default BookRouter;

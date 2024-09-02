@@ -44,7 +44,7 @@ const getBorrowData = async (request, response, next) => {
         $addFields: {
           BookImage: {
             $concat: [
-              "http://localhost:4000/api/image/client/",
+              "http://localhost:4000/api/image/book/",
               "$BookIDString",
               ".jpeg"
             ]
