@@ -1,10 +1,44 @@
 import React from "react";
 import { z } from "zod";
 import { BorrowRequest } from "../../Validator/BorrowDetailsValidator";
+import { BookCopyId, BookCopyIdArray } from "../../Validator/BookIdList";
 interface props {
   data: z.infer<typeof BorrowRequest>
 }
 const BorrowAdminTable: React.FC<props> = ({ data }) => {
+  const [BookIds, SetBookIds] = React.useState<z.infer<typeof BookCopyIdArray> | null>(null)
+  const [Key, SetKey] = React.useState<string>("");
+  let UpdateRequest = (!data.Approved) ? (async () => {
+    const fetchData = await fetch("/api/books/admin/", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ "BorrowId": data._id, "_id": Key })
+    }).then(res => res.json());
+    console.log(fetchData);
+  }) : (async () => { });
+  React.useEffect(() => {
+    const FetchIds = async () => {
+      if (!data.Approved) {
+        const fetchData = await fetch(`/api/books/admin/?ISBN=${data.ISBN}`).then(res => res.json());
+        try {
+          BookCopyIdArray.parse(fetchData);
+          if (fetchData?.length == 0) {
+            SetBookIds(null);
+          } else {
+            SetBookIds(fetchData);
+            SetKey(fetchData[0]._id);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        console.log("already approved")
+      }
+    }
+    FetchIds();
+  }, []);
 
   const x = Object.entries(data);
   return (
@@ -16,15 +50,40 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
       }}
     >
       <dialog id={data._id} className="modal">
-        <div className="modal-action card bg-base-100 image-full w-96 shadow-xl justify-center items-center">
-          <figure>
-            <img
-              src={data.BookImage}
-              alt={data.BookName}
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">{data.BookName}</h2>
+        <div
+          className="modal-action card bg-base-100 image-full w-96 shadow-xl justify-center items-center"
+          style={{
+            backgroundImage: `url('${data.BookImage}')`,
+            backgroundRepeat: "no-repeat no-repeat",
+            backgroundPosition: "center center",
+            backgroundSize: "cover"
+          }}
+        >
+          <div className="card-body text-gray-900 bg-[#00000080] rounded-2xl">
+            <h2 className="card-title backdrop-blur-md rounded-2xl">{data.BookName}</h2>
+            {
+              (BookIds != null) ?
+                (
+                  <>
+                    <select
+                      className="select select-primary bg-[#00000080] w-full max-w-xs"
+                      value={Key}
+                      onChange={e => {
+                        SetKey(e.target.value);
+                      }}
+                    >
+                      {
+                        BookIds.map(item => (<option key={item._id}>{item._id}</option>))
+                      }
+                    </select>
+                    <button type="button" onClick={e => {
+                      e.preventDefault();
+                      UpdateRequest();
+                    }}>{"Save"}</button>
+                  </>
+                ) :
+                (<></>)
+            }
           </div>
         </div>
 

@@ -8,7 +8,7 @@ import mongoose from "mongoose";
  * @property {mongoose.Schema.ObjectId} UserID
  * @property {string} UserEmail
  * @property {string} ISBN
- * @property {boolean} [Approved]
+ * @property {boolean} Approved
  * @property {mongoose.Schema.ObjectId} [BookID]
  */
 

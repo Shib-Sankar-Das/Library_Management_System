@@ -55,7 +55,6 @@ const UserPreviewNavbar: React.FC<prop> = ({ _id, Email, Name, Avatar, SearchTab
       <select
         className="select select-primary w-full max-w-xs"
         value={Key}
-        // defaultValue={"BookName"}
         onChange={e => {
           SetKey(e.target.value);
           SetAttribute(e.target.value);

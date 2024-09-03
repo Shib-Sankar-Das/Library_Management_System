@@ -8,7 +8,7 @@ import model from "../../../../models/index.js";
  */
 const getBookData = async (request, response, next) => {
   try {
-    let data = await model.Models.BookModel.find({ ISBN: request.query.ISBN, Borrowed: false }).select("-__v");
+    let data = await model.Models.BookModel.find({ ISBN: request.query.ISBN, Borrowed: false }).select("_id");
     data = JSON.parse(JSON.stringify(data));
     request.query = data;
     next();

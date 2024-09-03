@@ -6,10 +6,9 @@
  */
 const endPoint = async (request, response) => {
   try {
-    response.status(200).json(request.query);
+    response.status(200).json(request.body);
   } catch (e) {
-    console.log(e)
-    // response.status(500).json({ err: e.message });
+    response.status(500).json({ err: e.message });
   }
 }
 export default endPoint;
