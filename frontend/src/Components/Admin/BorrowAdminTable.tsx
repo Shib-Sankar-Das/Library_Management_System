@@ -6,8 +6,22 @@ interface props {
   data: z.infer<typeof BorrowRequest>
 }
 const BorrowAdminTable: React.FC<props> = ({ data }) => {
+
+  React.useEffect(()=>{
+    if(data.BorrowDate!=null){
+      const DDMMYYYY = Intl.DateTimeFormat("en-CA");
+      const formatted_date = DDMMYYYY.format(new Date(data.BorrowDate));
+      console.log(formatted_date);
+      data.BorrowDate = formatted_date;
+    }else{
+
+    }
+  },[])
+
   const [BookIds, SetBookIds] = React.useState<z.infer<typeof BookCopyIdArray> | null>(null)
   const [Key, SetKey] = React.useState<string>("");
+  
+  
   let UpdateRequest = (!data.Approved) ? (async () => {
     const fetchData = await fetch("/api/books/admin/", {
       method: "PUT",
@@ -18,6 +32,8 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
     }).then(res => res.json());
     console.log(fetchData);
   }) : (async () => { });
+
+
   React.useEffect(() => {
     const FetchIds = async () => {
       if (!data.Approved) {
@@ -34,7 +50,7 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
           console.log(e);
         }
       } else {
-        console.log("already approved")
+        // console.log("already approved");
       }
     }
     FetchIds();

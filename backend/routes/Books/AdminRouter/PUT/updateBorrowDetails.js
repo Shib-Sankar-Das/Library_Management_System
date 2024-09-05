@@ -11,6 +11,9 @@ const updateBorrowDetails = async (request, response, next) => {
     const data = { ...request.body };
     let DATE = new Date();
     DATE.setMonth(DATE.getMonth() + 1);
+    const doc = await models.Models.BorrowModel.findById(data.BorrowId);
+    const doc_2 = await models.Models.BookModel.findById(data._id);
+    if (doc == null || doc_2 == null) throw new Error("Invalid request");
     const updated = await models.Models.BorrowModel.findByIdAndUpdate(data.BorrowId,{Approved:true,BorrowDate:new Date(),RenewalDate:DATE,BookID:data._id},{new:true});
     const updateCopy = await models.Models.BookModel.findByIdAndUpdate(data._id,{Borrowed:true},{new:true});
     request.body = {updated};

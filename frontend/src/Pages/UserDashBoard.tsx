@@ -66,6 +66,7 @@ const UserDashBoard: React.FC = () => {
         (DATA.success) ? SetBookData(DATA.data) : console.log(DATA.error.message);
       });
   }
+  
 
   React.useEffect(() => {
     location.hash = "";
@@ -111,7 +112,7 @@ const UserDashBoard: React.FC = () => {
       <ToastContainer />
       <div className="flex flex-row">
         <aside className="flex flex-col items-center w-16 h-screen py-8 overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
-          <nav className="flex flex-col flex-1 space-y-6">
+          <nav className="flex flex-col flex-1 space-y-6 w-[55%]">
             <a href="/home" className="flex justify-center">
               <img
                 className="w-auto h-6 "
@@ -132,13 +133,6 @@ const UserDashBoard: React.FC = () => {
               className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
             >
               <BorrowIcon />
-            </a>
-
-            <a
-              href="#"
-              className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
-            >
-              <ReturnIcon />
             </a>
 
             <a

@@ -5,7 +5,8 @@ import { BorrowDetailsArray } from "../Validator/BorrowDetailsValidator";
 import AdminSettings from "../Components/Admin/AdminSettings";
 import BooksViewIcon from "../Components/Icon/BooksViewIcon";
 import UserIcon from "../Components/Icon/UserIcon";
-import BorrowIcon from "../Components/Icon/BorrowIcon";
+import BooksView from "../Components/Admin/BookView";
+import { BookCopyModel } from "../Validator/BookCopy";
 import ReturnIcon from "../Components/Icon/ReturnIcon";
 import NoDataFound from "../Components/NoDataFound";
 import ReloadIcon from "../Components/Icon/ReloadIcon";
@@ -17,6 +18,7 @@ const AdminDashBoard: React.FC = () => {
   const [Admin, SetAdmin] = React.useState<z.infer<typeof AdminLoginReponse> | null>();
   const [AdminImage, SetAdminImage] = React.useState<string>('./member.jpeg');
   const [Borrow, SetBorrow] = React.useState<z.infer<typeof BorrowDetailsArray> | null>(null);
+  const [BookData,SetBookData] = React.useState<z.infer<typeof BookCopyModel>| null>(null);
   const FetchAdminData = async () => {
     const response = await fetch('api/admin/').then(res => {
       if (res.status == 200) {
@@ -48,10 +50,24 @@ const AdminDashBoard: React.FC = () => {
     }
 
   }
+
+  const FetchBooks = async () => {
+    fetch("api/books")
+      .then((res) => {
+        if (res.status != 200)
+          toast.error(res.statusText, BottomToastOption);
+        return res.json();
+      })
+      .then((data) => {
+        const DATA = BookCopyModel.safeParse(data);
+        (DATA.success) ? SetBookData(DATA.data) : console.log(DATA.error.message);
+      });
+  }
   React.useEffect(() => {
     try {
       FetchAdminData();
       FetchBorrowModelData();
+      FetchBooks();
     } catch (e) {
       toast.error(JSON.stringify(e), BottomToastOption);
     }
@@ -59,7 +75,7 @@ const AdminDashBoard: React.FC = () => {
 
   React.useLayoutEffect(() => {
     const focusHandler = (id: string) => {
-      const ID_List = ['UserView', 'Borrow', 'Settings'];
+      const ID_List = ['UserView', 'BooksView', 'Settings'];
       ID_List.forEach(item => { 
         (document.getElementById(item))!.className = (id != item) ? ('hidden') : (''); 
       });
@@ -71,9 +87,7 @@ const AdminDashBoard: React.FC = () => {
           break;
         case "#UserView":
           focusHandler('UserView')
-          break;
-        case "#Borrow":
-          focusHandler('Borrow')
+          // break;
           break;
         case "#Settings":
           focusHandler('Settings')
@@ -97,7 +111,7 @@ const AdminDashBoard: React.FC = () => {
       <ToastContainer />
       <div className="flex flex-row">
         <aside className="flex flex-col items-center w-16 h-screen py-8 overflow-y-auto bg-white border-r rtl:border-l rtl:border-r-0 dark:bg-gray-900 dark:border-gray-700">
-          <nav className="flex flex-col flex-1 space-y-6">
+          <nav className="flex flex-col flex-1 space-y-6 w-[55%]">
             <a href="/home" className="flex justify-center">
               <img
                 className="w-auto h-6 "
@@ -114,25 +128,13 @@ const AdminDashBoard: React.FC = () => {
             </a>
             
             <a
-              href="#"
+              href="#BooksView"
               className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
             >
               <BooksViewIcon />
             </a>
 
-            <a
-              href="#Borrow"
-              className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
-            >
-              <BorrowIcon />
-            </a>
-
-            <a
-              href="#"
-              className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
-            >
-              <ReturnIcon />
-            </a>
+            
 
             <a
               href=""
@@ -171,11 +173,20 @@ const AdminDashBoard: React.FC = () => {
               (<span className="loading loading-infinity loading-lg" />)
           }
         </div>
-        <div id="Borrow" className="hidden" style={{
+        <div id="BooksView" style={{
           width: 'calc(100% - 64px)',
           animation: "opacityTransition linear 0.4s 1"
-        }}>
-          <NoDataFound />
+        }}
+        >
+          {
+            (BookData != null) ?
+              (
+                (BookData.length != 0) ?
+                  (<BooksView data={BookData} />) :
+                  (<NoDataFound />)
+              ) :
+              (<span className="loading loading-infinity loading-lg" />)
+          }
         </div>
         <div id="Settings" className="hidden" style={{
           width: 'calc(100% - 64px)',
