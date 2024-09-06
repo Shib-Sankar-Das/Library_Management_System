@@ -7,13 +7,14 @@ import BooksViewIcon from "../Components/Icon/BooksViewIcon";
 import UserIcon from "../Components/Icon/UserIcon";
 import BooksView from "../Components/Admin/BookView";
 import { BookCopyModel } from "../Validator/BookCopy";
-import ReturnIcon from "../Components/Icon/ReturnIcon";
+import AddBookIcon from "../Components/Icon/AddBookIcon";
 import NoDataFound from "../Components/NoDataFound";
 import ReloadIcon from "../Components/Icon/ReloadIcon";
 import BorrowApproval from "../Components/Admin/BorrowApproval";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomToastOption from "../Options/BottomToastOption";
+import AddBooks from "../Components/Admin/AddBooks";
 const AdminDashBoard: React.FC = () => {
   const [Admin, SetAdmin] = React.useState<z.infer<typeof AdminLoginReponse> | null>();
   const [AdminImage, SetAdminImage] = React.useState<string>('./member.jpeg');
@@ -75,7 +76,7 @@ const AdminDashBoard: React.FC = () => {
 
   React.useLayoutEffect(() => {
     const focusHandler = (id: string) => {
-      const ID_List = ['UserView', 'BooksView', 'Settings'];
+      const ID_List = ['UserView','AddBooks', 'BooksView', 'Settings'];
       ID_List.forEach(item => { 
         (document.getElementById(item))!.className = (id != item) ? ('hidden') : (''); 
       });
@@ -91,6 +92,9 @@ const AdminDashBoard: React.FC = () => {
           break;
         case "#Settings":
           focusHandler('Settings')
+          break;
+        case "#AddBooks":
+          focusHandler('AddBooks')
           break;
         default:
           focusHandler('UserView')
@@ -134,7 +138,12 @@ const AdminDashBoard: React.FC = () => {
               <BooksViewIcon />
             </a>
 
-            
+            <a
+              href="#AddBooks"
+              className="p-1.5 text-gray-700 focus:outline-nones transition-colors duration-200 rounded-lg dark:text-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100"
+            >
+              <AddBookIcon />
+            </a>
 
             <a
               href=""
@@ -157,7 +166,7 @@ const AdminDashBoard: React.FC = () => {
           </div>
         </aside>
 
-        <div id="UserView" className=""
+        <div id="UserView"
           style={{
             width:'calc(100% - 64px)',
             animation:'opacityTransition linear 0.4s 1'
@@ -188,6 +197,13 @@ const AdminDashBoard: React.FC = () => {
               (<span className="loading loading-infinity loading-lg" />)
           }
         </div>
+        <div id="AddBooks" style={{
+          width: 'calc(100% - 64px)',
+          animation: "opacityTransition linear 0.4s 1"
+        }}>
+          <AddBooks/>
+        </div>
+
         <div id="Settings" className="hidden" style={{
           width: 'calc(100% - 64px)',
           animation: "opacityTransition linear 0.4s 1"

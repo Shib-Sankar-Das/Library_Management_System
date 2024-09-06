@@ -7,7 +7,7 @@ import express from "express";
  */
 const invalidMimeTypeError = async (request,response,next) => {
   try{
-    const file = Array.isArray(request.files.Avatar)?(request.files.Avatar[0]):(request.files.Avatar);
+    const file = Array.isArray(request.files.CoverPage)?(request.files.Avatar[0]):(request.files.CoverPage);
     if(file.mimetype !="image/jpeg") throw new Error("invalid mimetype for user avatar");
     next();
   }catch(e){

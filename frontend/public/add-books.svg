@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 512 512" xml:space="preserve">
+<circle style="fill:#F2CF61;" cx="256" cy="256" r="256"/>
+<path style="fill:#233540;" d="M112,106.332c0,13.2,10.8,24,24,24h188h24v24c0,0,0,148,0,200c0,4-4,8-8,8c-52-0.024-204,0-204,0
+	c-13.2,0-24-10.8-24-24v-184V106.332z"/>
+<g>
+	<rect x="152" y="130.332" style="fill:#1C2A33;" width="8" height="232"/>
+	<rect x="176" y="178.332" style="fill:#1C2A33;" width="8" height="184"/>
+	<path style="fill:#1C2A33;" d="M348,146.332v140c0,8.8-7.2,16-16,16H192c-8.8,0-16-7.2-16-16v-112c0-16,12-28,28-28H348z"/>
+</g>
+<path style="fill:#406A80;" d="M348,90.332c0-4-4-8-8-8s-16,0-16,0H136c-13.2,0-24,10.8-24,24s10.8,24,24,24h188h24
+	C348,130.332,348,100.332,348,90.332z"/>
+<rect x="152" y="82.332" style="fill:#395F73;" width="8" height="48"/>
+<path style="fill:#E66356;" d="M136,130.332h16v-48h-16c-13.2,0-24,10.8-24,24S122.8,130.332,136,130.332z"/>
+<path style="fill:#F5F5F5;" d="M136,122.332c-8.672,0-16-7.328-16-16s7.328-16,16-16h212v32H136z"/>
+<path style="fill:#CC584C;" d="M136,362.332h16v-232h-16c-13.2,0-24-10.8-24-24v48v184C112,351.532,122.8,362.332,136,362.332z"/>
+<g>
+	<rect x="212" y="234.32" style="fill:#F5F5F5;" width="80" height="8"/>
+	<rect x="192" y="234.32" style="fill:#F5F5F5;" width="104" height="8"/>
+</g>
+<path style="fill:#233540;" d="M184,178.332c0,13.2,10.8,24,24,24h176h24v24c0,0,0,148,0,200c0,4-4,8-8,8c-52-0.024-192,0-192,0
+	c-13.2,0-24-10.8-24-24v-184V178.332z"/>
+<rect x="224" y="202.332" style="fill:#1C2A33;" width="8" height="232"/>
+<path style="fill:#406A80;" d="M408,162.332c0-4-4-8-8-8s-16,0-16,0H208c-13.2,0-24,10.8-24,24s10.8,24,24,24h176h24
+	C408,202.332,408,172.332,408,162.332z"/>
+<rect x="224" y="154.332" style="fill:#395F73;" width="8" height="48"/>
+<path style="fill:#E66356;" d="M208,202.332h16v-48h-16c-13.2,0-24,10.8-24,24S194.8,202.332,208,202.332z"/>
+<path style="fill:#F5F5F5;" d="M208,194.332c-8.672,0-16-7.328-16-16s7.328-16,16-16h200v32H208z"/>
+<path style="fill:#CC584C;" d="M208,434.332h16v-232h-16c-13.2,0-24-10.8-24-24v48v184C184,423.532,194.8,434.332,208,434.332z"/>
+<g>
+	<rect x="284" y="290.32" style="fill:#F5F5F5;" width="64" height="8"/>
+	<rect x="264" y="306.32" style="fill:#F5F5F5;" width="104" height="8"/>
+</g>
+</svg>

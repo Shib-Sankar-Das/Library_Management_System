@@ -2,6 +2,8 @@ import React from "react";
 import { z } from "zod";
 import { BorrowRequest } from "../../Validator/BorrowDetailsValidator";
 import { BookCopyId, BookCopyIdArray } from "../../Validator/BookIdList";
+import { toast } from "react-toastify";
+import BottomtoastOption from "../../Options/BottomToastOption";
 interface props {
   data: z.infer<typeof BorrowRequest>
 }
@@ -29,7 +31,15 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ "BorrowId": data._id, "_id": Key })
-    }).then(res => res.json());
+    })
+    .then(res => {
+      if(res.status==200){
+        toast.success(res.statusText,BottomtoastOption);
+      }else{
+        toast.error(res.statusText,BottomtoastOption);
+      }
+      return res.json()
+    });
     console.log(fetchData);
   }) : (async () => { });
 
