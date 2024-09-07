@@ -1,40 +1,14 @@
----
-marp: false
----
-
-# Library_Management_System
-
-## Backend
-
-```
-Backend/
-├── models/
-│   ├── Book.js
-│   └── User.js
-│       
-├── routes/
-│   ├── books.js
-│   ├── users.js
-│   └── auth.js
-│       
-├── index.js
-│       
-└── views/
-    └── index.js
-```
-
-## Frontend
-
-```
-Frontend/
-└── src/
-    ├── login.js (user, admin)
-    ├── register.js (user)
-    ├── home.js (user)
-    ├── booklist.js (search)
-    ├── forgetpassword.js
-    ├── userdashboard.js (renew)
-    ├── approval.js (counter)
-    └── home.js (admin) (add, delete, update)
-
-```
+# Project preview
+![home_page_1](./screenshots/home_page_1.png)
+![home_page_2](./screenshots/home_page_2.png)
+![admin-login](./screenshots/admin-login.png)
+![admin-user-pannel](./screenshots/admin-user-pannel.png)
+![admins-user-preview](./screenshots/admins-user-preview.png)
+![admin-book-pannel](./screenshots/admin-book-pannel.png)
+![add-book](./screenshots/add-book.png)
+![update-admin-details](./screenshots/update-admin-details.png)
+![user-signup](./screenshots/user-signup.png)
+![user-login](./screenshots/user-login.png)
+![user-book-view](./screenshots/user-book-view.png)
+![user-borrow-preview](./screenshots/user-borrow-preview.png)
+![user-details-update](./screenshots/user-details-update.png)
