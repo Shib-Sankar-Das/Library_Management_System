@@ -3,27 +3,47 @@ import { z } from "zod";
 import { BorrowRequest } from "../../Validator/BorrowDetailsValidator";
 import { BookCopyId, BookCopyIdArray } from "../../Validator/BookIdList";
 import { toast } from "react-toastify";
-import BottomtoastOption from "../../Options/BottomToastOption";
+import BottomToastOption from "../../Options/BottomToastOption";
 interface props {
   data: z.infer<typeof BorrowRequest>
 }
 const BorrowAdminTable: React.FC<props> = ({ data }) => {
 
-  React.useEffect(()=>{
-    if(data.BorrowDate!=null){
+  React.useEffect(() => {
+    if (data.BorrowDate != null) {
       const DDMMYYYY = Intl.DateTimeFormat("en-CA");
       const formatted_date = DDMMYYYY.format(new Date(data.BorrowDate));
       console.log(formatted_date);
       data.BorrowDate = formatted_date;
-    }else{
+    } else {
 
     }
-  },[])
+  }, [])
 
   const [BookIds, SetBookIds] = React.useState<z.infer<typeof BookCopyIdArray> | null>(null)
   const [Key, SetKey] = React.useState<string>("");
-  
-  
+
+  const DeleteBorrowRecord = async () => {
+    const response = (
+      await fetch('/api/borrow-book/admin', {
+          method: "DELETE", 
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ "_id": data._id })
+        })
+        .then(res => {
+          if (res.status == 200) {
+            toast.success(res.statusText, BottomToastOption)
+          } else {
+            toast.error(res.statusText, BottomToastOption)
+          }
+          return res.json();
+        })
+    );
+    console.log(response)
+  }
+
   let UpdateRequest = (!data.Approved) ? (async () => {
     const fetchData = await fetch("/api/books/admin/", {
       method: "PUT",
@@ -32,14 +52,14 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
       },
       body: JSON.stringify({ "BorrowId": data._id, "_id": Key })
     })
-    .then(res => {
-      if(res.status==200){
-        toast.success(res.statusText,BottomtoastOption);
-      }else{
-        toast.error(res.statusText,BottomtoastOption);
-      }
-      return res.json()
-    });
+      .then(res => {
+        if (res.status == 200) {
+          toast.success(res.statusText, BottomToastOption);
+        } else {
+          toast.error(res.statusText, BottomToastOption);
+        }
+        return res.json()
+      });
     console.log(fetchData);
   }) : (async () => { });
 
@@ -102,13 +122,40 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
                         BookIds.map(item => (<option key={item._id}>{item._id}</option>))
                       }
                     </select>
-                    <button type="button" onClick={e => {
-                      e.preventDefault();
-                      UpdateRequest();
-                    }}>{"Save"}</button>
+                    <button
+                      type="button"
+                      className="btn btn-error"
+                      onClick={e => {
+                        e.preventDefault();
+                        DeleteBorrowRecord();
+                      }}
+                    >
+                      DELETE
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={e => {
+                        e.preventDefault();
+                        UpdateRequest();
+                      }}
+                    >
+                      SAVE
+                    </button>
                   </>
                 ) :
-                (<></>)
+                (
+                  <button
+                    type="button"
+                    className="btn btn-error"
+                    onClick={e => {
+                      e.preventDefault();
+                      DeleteBorrowRecord();
+                    }}
+                  >
+                    DELETE
+                  </button>
+                )
             }
           </div>
         </div>

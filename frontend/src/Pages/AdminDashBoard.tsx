@@ -20,6 +20,7 @@ const AdminDashBoard: React.FC = () => {
   const [AdminImage, SetAdminImage] = React.useState<string>('./member.jpeg');
   const [Borrow, SetBorrow] = React.useState<z.infer<typeof BorrowDetailsArray> | null>(null);
   const [BookData,SetBookData] = React.useState<z.infer<typeof BookCopyModel>| null>(null);
+  
   const FetchAdminData = async () => {
     const response = await fetch('api/admin/').then(res => {
       if (res.status == 200) {
@@ -33,6 +34,7 @@ const AdminDashBoard: React.FC = () => {
     SetAdminImage(response["Image"]);
     SetAdmin(response);
   }
+
   const FetchBorrowModelData = async () => {
     const response = await fetch('/api/borrow-book/admin').then(res => {
       if (res.status == 200) {
@@ -64,23 +66,16 @@ const AdminDashBoard: React.FC = () => {
         (DATA.success) ? SetBookData(DATA.data) : console.log(DATA.error.message);
       });
   }
-  React.useEffect(() => {
-    try {
-      FetchAdminData();
-      FetchBorrowModelData();
-      FetchBooks();
-    } catch (e) {
-      toast.error(JSON.stringify(e), BottomToastOption);
-    }
-  }, []);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
+    
     const focusHandler = (id: string) => {
       const ID_List = ['UserView','AddBooks', 'BooksView', 'Settings'];
       ID_List.forEach(item => { 
         (document.getElementById(item))!.className = (id != item) ? ('hidden') : (''); 
       });
     }
+
     const focusChanger = () => {
       switch (location.hash) {
         case "#BooksView":
@@ -88,7 +83,6 @@ const AdminDashBoard: React.FC = () => {
           break;
         case "#UserView":
           focusHandler('UserView')
-          // break;
           break;
         case "#Settings":
           focusHandler('Settings')
@@ -103,12 +97,19 @@ const AdminDashBoard: React.FC = () => {
     }
     window.addEventListener("load", focusChanger);
     window.addEventListener("hashchange", focusChanger);
-
-    return () => {
-      window.document.removeEventListener("DOMContentLoaded", focusChanger);
-      window.removeEventListener("hashchange", focusChanger);
-    };
+    
+    try {
+      window.location.hash = "#";
+      focusChanger();
+      FetchAdminData();
+      FetchBorrowModelData();
+      FetchBooks();
+    } catch (e) {
+      toast.error(JSON.stringify(e), BottomToastOption);
+    }
+    
   }, []);
+
 
   return (
     <>
