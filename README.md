@@ -218,4 +218,4 @@
 ![user-book-view](./screenshots/user-book-view.png)
 ![user-borrow-preview](./screenshots/user-borrow-preview.png)
 ![user-details-update](./screenshots/user-details-update.png)
-[![alt text](./screenshots/home_page_1.png)](./screenshots/preview.mp4)
+[![preview](./screenshots/home_page_1.png)](https://youtu.be/xlRhx8V5Fvw?si=-NkbGefnJRrSTczz)
