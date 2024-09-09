@@ -1,9 +1,5 @@
 # Project structure
-<style>
-  * {
-    font-family: 'consolas';
-  }
-</style>
+
 # BACKEND
     • .env
     • .gitignore
