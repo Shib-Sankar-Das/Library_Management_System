@@ -8,13 +8,15 @@ interface props {
   data: z.infer<typeof BorrowRequest>
 }
 const BorrowAdminTable: React.FC<props> = ({ data }) => {
-
+  const [Data,SetData] = React.useState<z.infer<typeof BorrowRequest>>(data);
   React.useEffect(() => {
-    if (data.BorrowDate != null) {
+    if (data.BorrowDate != null && data.RenewalDate != null) {
       const DDMMYYYY = Intl.DateTimeFormat("en-CA");
-      const formatted_date = DDMMYYYY.format(new Date(data.BorrowDate));
-      console.log(formatted_date);
-      data.BorrowDate = formatted_date;
+      const formatted_borrow_date = DDMMYYYY.format(new Date(data.BorrowDate));
+      const formatted_renewal_date = DDMMYYYY.format(new Date(data.RenewalDate));
+      SetData(prev=>{
+        return {...prev,BorrowDate:formatted_borrow_date,RenewalDate:formatted_renewal_date};
+      })
     } else {
 
     }
@@ -44,13 +46,13 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
     console.log(response)
   }
 
-  let UpdateRequest = (!data.Approved) ? (async () => {
+  let UpdateRequest = (!Data.Approved) ? (async () => {
     const fetchData = await fetch("/api/books/admin/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ "BorrowId": data._id, "_id": Key })
+      body: JSON.stringify({ "BorrowId": Data._id, "_id": Key })
     })
       .then(res => {
         if (res.status == 200) {
@@ -67,7 +69,7 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
   React.useEffect(() => {
     const FetchIds = async () => {
       if (!data.Approved) {
-        const fetchData = await fetch(`/api/books/admin/?ISBN=${data.ISBN}`).then(res => res.json());
+        const fetchData = await fetch(`/api/books/admin/?ISBN=${Data.ISBN}`).then(res => res.json());
         try {
           BookCopyIdArray.parse(fetchData);
           if (fetchData?.length == 0) {
@@ -86,7 +88,7 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
     FetchIds();
   }, []);
 
-  const x = Object.entries(data);
+  const x = Object.entries(Data);
   return (
     <div
       className="overflow-x-auto bg-slate-900 rounded-md hover:scale-[90%] m-1 p-1"
@@ -95,7 +97,7 @@ const BorrowAdminTable: React.FC<props> = ({ data }) => {
         (document.getElementById(data._id)! as HTMLDialogElement).showModal();
       }}
     >
-      <dialog id={data._id} className="modal">
+      <dialog id={Data._id} className="modal">
         <div
           className="modal-action card bg-base-100 image-full w-96 shadow-xl justify-center items-center"
           style={{

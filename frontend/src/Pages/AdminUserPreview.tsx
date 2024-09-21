@@ -22,7 +22,6 @@ const AdminUserPreview: React.FC = () => {
       toast.error('parsing error', BottomtoastOption);
     }
   }, []);
-  // const OPTIONS = ["BookName","_id","ISBN","BorrowDate","RenewalDate"];
   const SearchTable=()=>{
     SetElement(()=>{
       const filtered =(UserData)? UserData?.BorrowRequests.filter(item => {
