@@ -16,7 +16,12 @@ const updateBorrowDetails = async (request, response, next) => {
     if (doc == null || doc_2 == null) throw new Error("Invalid request");
     const updated = await models.Models.BorrowModel.findByIdAndUpdate(data.BorrowId,{Approved:true,BorrowDate:new Date(),RenewalDate:DATE,BookID:data._id},{new:true});
     const updateCopy = await models.Models.BookModel.findByIdAndUpdate(data._id,{Borrowed:true},{new:true});
-    request.body = {updated};
+    const Data = JSON.parse(JSON.stringify(updated));
+    delete Data["UserEmail"];
+    delete Data["UserID"];
+    delete Data["UserName"];
+    delete Data["__v"];
+    request.body = Data;
     next();
   } catch (e) {
     response.status(401).json({ err: e.message });

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 interface prop {
   _id: string,
   Avatar: string,
@@ -10,13 +10,13 @@ interface prop {
   SetSearch: (word: string) => void
 };
 const UserPreviewNavbar: React.FC<prop> = ({ _id, Email, Name, Avatar, SearchTable, SetSearch, SetAttribute }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [Key, SetKey] = React.useState("BookName");
   return (<div className="navbar bg-base-100">
     <div className="flex-1">
       <button className="btn btn-ghost text-xl"
         onClick={() => {
-          navigate('/admin-dashboard');
+          window.location.href = '/admin-dashboard';
         }}
       >
         <svg 

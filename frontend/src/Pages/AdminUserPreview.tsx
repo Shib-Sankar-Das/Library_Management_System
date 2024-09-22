@@ -13,11 +13,20 @@ const AdminUserPreview: React.FC = () => {
   const [Element,SetElement] = React.useState<z.infer<typeof BorrowRequestArray>>([]);
   const [Attribute,SetAttribute] = React.useState<string>("");
   const [Search,SetSearch] = React.useState<string>("");
+
+  const RemoveRecord = (_id:string) => {
+    SetElement(prev=>{
+      const res = prev.filter(it=>it._id!=_id);
+      console.log(res);
+      return res;
+    });
+  }
+
   React.useEffect(() => {
     const isValid = BorrowDetails.safeParse(location.state);
     if (isValid.success) {
       SetUserData(location.state);
-      SetElement(location.state.BorrowRequests)
+      SetElement(location.state.BorrowRequests);
     } else {
       toast.error('parsing error', BottomtoastOption);
     }
@@ -60,7 +69,7 @@ const AdminUserPreview: React.FC = () => {
         <div
           className="grid grid-cols-[repeat(auto-fill,min(90%,400px))] justify-center items-center auto-rows-[350px] gap-1 overflow-scroll min-h-[calc(100vh - 64px)]"
         >
-          {Element.map(item => (<BorrowAdminTable  data={item} key={crypto.randomUUID()} />))}
+          {Element.map(item => (<BorrowAdminTable  data={item} key={crypto.randomUUID()} removeRecord={RemoveRecord}/>))}
         </div>
       ) :
         (<NoDataFound />)
