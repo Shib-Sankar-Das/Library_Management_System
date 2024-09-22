@@ -58,6 +58,7 @@
             • updateBorrowDetails.js
         • GET
           • endPoint.js
+          • methods.js
       • BorrowBook
         • index.js
         • AdminsRouter
