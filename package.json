@@ -1,0 +1,13 @@
+{
+  "name": "mern",
+  "version": "1.0.0",
+  "description": "",
+  "main": "update_readme.js",
+  "type": "module",
+  "scripts": {
+    "update": "node ./update_readme.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
