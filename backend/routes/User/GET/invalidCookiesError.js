@@ -8,7 +8,7 @@ import model from './../../../models/index.js'
  */
 const invalidCookiesError = async (request,response,next) => {
   try{
-    if(!request.query) next();
+    if(Object.entries(request.query).length) next();
     else{
       const {_id} = JWT.decode(request.cookies._id,process.env.JWT_KEY);
       if(_id==null) throw new Error('User not logged in');
@@ -24,14 +24,16 @@ const invalidCookiesError = async (request,response,next) => {
           delete doc.__v;
           delete doc.Avatar;
           delete doc.Password;
-          doc['Image'] = '/api/image/client/'+doc['_id'];
-          delete doc._id;
+          doc['Image'] = 'http://localhost:4000/api/image/client/'+doc['_id']+'.jpeg';
           response.send(doc);
+        }
+        else {
+          throw  new Error("Invalid cookies");
         }
       }
     }
   }catch(e){
-    response.json({err:e.message});
+    response.status(401).json({err:e.message});
   }
 }
 export default invalidCookiesError;

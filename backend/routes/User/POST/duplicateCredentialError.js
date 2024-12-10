@@ -16,7 +16,7 @@ const duplicateCredentialError = async (request,response,next) => {
     request.body = doc;
     next();
   }catch(e){
-    response.json({err:e.message});
+    response.status(409).json({err:e.message});
   }
 
 }

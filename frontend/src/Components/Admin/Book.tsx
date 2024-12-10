@@ -1,7 +1,11 @@
 import React from "react";
 import { z } from "zod";
-import { bookCopySchema } from "../Validator/BookCopy";
+import { bookCopySchema } from "../../Validator/BookCopy";
 import styled from 'styled-components';
+import UV from "../../Validator/UserValidator";
+import BorrowRequestValidator from "../../Validator/BorrowRequestObject";
+import { toast } from 'react-toastify';
+import BottomToastOption from "../../Options/BottomToastOption";
 type props = z.infer<typeof bookCopySchema>;
 const BookContainer = styled.div`
   position: relative;
@@ -42,19 +46,20 @@ const Text = styled.p`
   font-size: 20px;
   font-weight: bolder;
 `;
-const Book: React.FC<props> = (data: props) => {
+const Book: React.FC<{data:props}> = ({data}) => {
   
-
   return (
     <>
-      
     <BookContainer>
+        
         <Text style={{textAlign:'left',paddingLeft:"5px", fontSize:'16px'}}>
           {"Author: "+data.Author}
           {<br/>}
           {"Publisher: "+data.Publisher}
           <br/>
           {"Subject: "+data.Subject}
+          <br/>
+          {"ISBN: "+data.ISBN}
         </Text>
       <Cover 
         style={{
@@ -63,7 +68,7 @@ const Book: React.FC<props> = (data: props) => {
           backgroundRepeat:'no-repeat',
           backgroundSize:'cover'
         }}>
-        <Text style={{backdropFilter:'blur(5px)'}}>{data.Name}</Text>
+        <Text style={{backdropFilter:'blur(5px)',backgroundColor:"#ffffff40",width:'100%'}}>{data.Name}</Text>
       </Cover>
     </BookContainer>
     </>

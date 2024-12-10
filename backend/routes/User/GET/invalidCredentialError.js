@@ -12,7 +12,7 @@ const invalidCredentialError = async (request,response,next) => {
     request.query = ClientValidator.UserLoginSchema.parse(user);
     next();
   }catch(e){
-    response.json({err:e.message});
+    response.status(400).json({err:e.message});
   }
 }
 export default invalidCredentialError;

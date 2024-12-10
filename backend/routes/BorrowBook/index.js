@@ -1,5 +1,22 @@
 import express from "express"
-import getEndPoint from "./GET/endPoint.js";
+import GET from "./GET/methods.js"
+import POST from "./POST/methods.js"
+// import PUT from "./PUT/methods.js"
+import AdminsRouter from "./AdminsRouter/index.js"
 const BorrowRouter = express.Router();
-BorrowRouter.get("/borrow-book",getEndPoint)
+
+BorrowRouter.route("/borrow-book")
+  .get(
+    GET.badRequestError,
+    GET.invalidCookiesError,
+    GET.endPoint
+  )
+  .post(
+    POST.invalidCookiesError,
+    POST.invalidRequestError,
+    POST.invalidUserIdError,
+    POST.duplicateBorrowRequestError,
+    POST.endPoint
+  );
+BorrowRouter.use("/borrow-book",AdminsRouter);
 export default BorrowRouter;

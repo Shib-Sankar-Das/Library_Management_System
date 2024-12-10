@@ -13,6 +13,6 @@ const endPoint = async (request,response) => {
     httpOnly:true,
     expires:TenYearsFromNow
   });
-  response.json(request.body);
+  response.status(200).json(request.body);
 }
 export default endPoint;

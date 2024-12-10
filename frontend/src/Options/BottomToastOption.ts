@@ -1,5 +1,5 @@
 import { ToastOptions } from 'react-toastify';
-const BottomtoastOption:ToastOptions = {
+const BottomToastOption:ToastOptions = {
   position: "bottom-center",
   autoClose: 3000,
   hideProgressBar: true,
@@ -9,4 +9,4 @@ const BottomtoastOption:ToastOptions = {
   progress: undefined,
   theme: "colored",
 }
-export default BottomtoastOption;
+export default BottomToastOption;
